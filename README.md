@@ -36,4 +36,6 @@ With open source and also cloud tools how are can we simplify the entire process
   - Quantum  
 - Agility
 
-## more to come
+## New Analytics technology flow chart
+
+
