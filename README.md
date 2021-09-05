@@ -29,5 +29,11 @@ With open source and also cloud tools how are can we simplify the entire process
 - MLOps automated deployments
 - MLOps Model environment management
 - Audit and compliance capability
+- Scale
+  - CPU
+  - GPU
+  - FPGA
+  - Quantum  
+- Agility
 
 ## more to come
