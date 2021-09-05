@@ -38,4 +38,14 @@ With open source and also cloud tools how are can we simplify the entire process
 
 ## New Analytics technology flow chart
 
+![alt text](https://github.com/balakreshnan/simplifymlopsforeveryone/blob/main/images/AnalyticsTechchart.jpg "Logo Title Text 1")
 
+## Data Science and MLOps Process End to End
+
+![alt text](https://github.com/balakreshnan/simplifymlopsforeveryone/blob/main/images/MLOps.jpg "Logo Title Text 1")
+
+## Training and Deployment process - high level
+
+![alt text](https://github.com/balakreshnan/simplifymlopsforeveryone/blob/main/images/rcadiag.jpg "Logo Title Text 1")
+
+- More to come
