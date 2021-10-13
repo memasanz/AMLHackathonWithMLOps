@@ -15,7 +15,7 @@ trigger:
     - MLOps
   paths:
     include:
-    - 03_DevOpsPipeline/
+    - 03_DevOpsPipeline/CreateAMLPipeline.py
     - configuration/
 
 variables:
