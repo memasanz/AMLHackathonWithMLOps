@@ -108,4 +108,4 @@ stages:
     container: mlops
     timeoutInMinutes: 0
     steps:
-    - template: autoencoder-publish-model-artifact-template.yml
+    - template: publish-model-artifact-template.yml
