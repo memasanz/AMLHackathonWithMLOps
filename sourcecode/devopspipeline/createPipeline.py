@@ -17,7 +17,7 @@ from azureml.data.sql_data_reference import SqlDataReference
 from azureml.pipeline.steps import DataTransferStep
 import logging
 import os
-from env_variables import Env
+
 
 # ### Connect to Azure ML Workspace, Provision Compute Resources, and get References to Datastores
 # Connect to workspace using config associated config file. Get a reference to you pre-existing AML compute cluster or provision a new cluster to facilitate processing. Finally, get references to your default blob datastore.
