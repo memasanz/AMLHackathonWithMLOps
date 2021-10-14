@@ -16,7 +16,6 @@ trigger:
   paths:
     include:
     - 03_DevOpsPipeline/
-    - configuration/
 
 variables:
 - template: DEV-devOps-variables-template.yml
