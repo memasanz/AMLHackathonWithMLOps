@@ -15,7 +15,7 @@ trigger:
     - MLOps
   paths:
     include:
-    - 03_DevOpsPipeline/
+    - 03_DevOpsPipeline/CreateAMLPipeline.py
 
 variables:
 - template: DEV-devOps-variables-template.yml
@@ -47,12 +47,12 @@ stages:
       inputs:
         azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
         scriptLocation: inlineScript
-        workingDirectory: $(Build.SourcesDirectory)/03_DevOpsPipeline
+        workingDirectory: $(Build.SourcesDirectory)
         inlineScript: |
           set -e # fail on error
           export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
           # Invoke the Python building and publishing a training pipeline
-          python -m CreateAMLPipeline
+          python -m 03_DevOpsPipeline.CreateAMLPipeline
       displayName: 'Publish Azure Machine Learning Pipeline (Training & Registration)'
 
 - stage: 'Trigger_AML_Pipeline'
