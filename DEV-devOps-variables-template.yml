@@ -5,10 +5,10 @@ variables:
     value: eastus2
     
   - name: RESOURCE_GROUP
-    value: mm-aml-devops-dev-rg
+    value: mm-machine-learning-dev-rg
   
   - name: WORKSPACE_NAME
-    value: mm-aml-devops-dev
+    value: mm-aml-dev
     
   - name: AZURE_RM_SVC_CONNECTION
     value: indevtemplateymlfile
@@ -16,8 +16,15 @@ variables:
   - name: ACI_DEPLOYMENT_NAME
     value: mlops-aci
     
-   - name: SUBSCRIPTION_ID
+  - name: SUBSCRIPTION_ID
     value: 5da07161-3770-4a4b-aa43-418cbbb627cf
     
-    - name: WORKSPACE_REGION
+  - name: WORKSPACE_REGION
     value: eastus2
+    
+  - name: CLUSTER_NAME
+    value: mm-cluster
+    
+    
+    
+  
