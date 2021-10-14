@@ -16,7 +16,7 @@ trigger:
 
 
 variables:
-- group: devopsforai-aml-vg
+- group: vgroup-aml-devops-dev
 
 pool:
   vmImage: ubuntu-latest
