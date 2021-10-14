@@ -85,6 +85,12 @@ except ComputeTargetException:
         pipeline_cluster.wait_for_completion(show_output=True)
     except Exception as ex:
         print(ex)
+        
+import os
+files = [f for f in os.listdir('.') if os.path.isfile(f)]
+for f in files:
+    print(f)
+    
 
 conda_yml_file = 'environment.yml'
 
