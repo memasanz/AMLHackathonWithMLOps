@@ -86,7 +86,7 @@ except ComputeTargetException:
     except Exception as ex:
         print(ex)
 
-conda_yml_file = './environment.yml'
+conda_yml_file = 'environment.yml'
 
 # Create a Python environment for the experiment (from a .yml file)
 env = Environment.from_conda_specification("experiment_env", conda_yml_file)
