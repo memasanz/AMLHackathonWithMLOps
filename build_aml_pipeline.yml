@@ -22,11 +22,11 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-- stage: 'Build Pipeline'
-  displayName: 'Build Pipeline'
+- stage: 'BuildPipeline'
+  displayName: 'BuildPipeline'
   jobs:
-  - job: "Build Pipeline"
-    displayName: "Build Pipeline"
+  - job: "BuildPipeline"
+    displayName: "BuildPipeline"
     container: mlops
     timeoutInMinutes: 0
     steps:
