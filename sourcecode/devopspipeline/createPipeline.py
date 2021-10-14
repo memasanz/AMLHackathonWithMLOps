@@ -33,14 +33,21 @@ print('subscription_id = ' + str(subscription_id))
 resource_group = os.getenv("RESOURCE_GROUP", default="")
 workspace_name = os.getenv("WORKSPACE_NAME", default="")
 workspace_region = os.getenv("WORKSPACE_REGION", default="")
+cluster_name = os.getenv("CLUSTER_NAME", default="")
 
 print('resource_group = ' + str(resource_group))
 print('workspace_name = ' + str(workspace_name))
 print('workspace_region = ' + str(workspace_region))
+print('cluster_name = ' + str(cluster_name))
 
 workspace_name = 'mm-aml-dev'
 resource_group = 'mm-machine-learning-dev-rg'
 workspace_region = 'eastus2'
+
+registered_env_name = "experiment_env"
+experiment_folder = 'exp_pipeline'
+dataset_prefix_name = 'exp'
+cluster_name = "mm-cluster"
 
 print('resource_group = ' + str(resource_group))
 print('workspace_name = ' + str(workspace_name))
