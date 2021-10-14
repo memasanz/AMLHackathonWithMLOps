@@ -15,7 +15,7 @@ trigger:
     - MLOps
   paths:
     include:
-    - 03_DevOpsPipeline/CreateAMLPipeline.py
+    - 03_DevOpsPipeline/
     - configuration/
 
 variables:
@@ -37,7 +37,7 @@ stages:
 - stage: 'Publish_AML_Pipeline'
   displayName: 'Publish AML Pipeline'
   variables:
-    - group: azureml-variables
+    - group: vgroup-aml-devops-dev
   jobs:
   - job: "AML_PIPELINE"
     displayName: "Dev - Build and Publish AML Pipeline"
@@ -60,7 +60,7 @@ stages:
   displayName: 'Dev - Run Training and Evaluation Pipeline'
   condition: succeeded()
   variables:
-  - group: azureml-variables
+  - group: vgroup-aml-devops-dev
   - name: BUILD_URI
     value: '$(SYSTEM.COLLECTIONURI)$(SYSTEM.TEAMPROJECT)/_build/results?buildId=$(BUILD.BUILDID)'
   jobs:
