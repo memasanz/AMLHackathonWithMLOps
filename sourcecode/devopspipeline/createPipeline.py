@@ -27,6 +27,9 @@ import os
 print('hello')
 
 subscription_id = os.getenv("SUBSCRIPTION_ID", default="")
+
+print('subscription_id = ' + str(subscription_id))
+
 resource_group = os.getenv("RESOURCE_GROUP", default="")
 workspace_name = os.getenv("WORKSPACE_NAME", default="")
 workspace_region = os.getenv("WORKSPACE_REGION", default="")

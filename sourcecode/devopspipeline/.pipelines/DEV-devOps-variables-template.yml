@@ -15,3 +15,9 @@ variables:
     
   - name: ACI_DEPLOYMENT_NAME
     value: mlops-aci
+    
+   - name: SUBSCRIPTION_ID
+    value: 5da07161-3770-4a4b-aa43-418cbbb627cf
+    
+    - name: WORKSPACE_REGION
+    value: eastus2
