@@ -13,10 +13,13 @@ trigger:
   paths:
     include:
     - sourcecode/devopspipeline/
+    - sourcecode/devopspipeline/environment.yml
 
 
 variables:
+- template: DEV-devOps-variables-template.yml
 - group: vgroup-aml-devops-dev
+
 
 pool:
   vmImage: ubuntu-latest
