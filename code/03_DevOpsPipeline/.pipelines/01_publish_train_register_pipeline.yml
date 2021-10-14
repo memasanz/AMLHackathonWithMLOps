@@ -15,7 +15,7 @@ trigger:
     - MLOps
   paths:
     include:
-    - 03_DevOpsPipeline/CreateAMLPipeline.py
+    - CreateAMLPipeline.py
 
 variables:
 - template: DEV-devOps-variables-template.yml
@@ -52,7 +52,7 @@ stages:
           set -e # fail on error
           export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
           # Invoke the Python building and publishing a training pipeline
-          python -m 03_DevOpsPipeline.CreateAMLPipeline
+          python -m code.03_DevOpsPipeline.CreateAMLPipeline
       displayName: 'Publish Azure Machine Learning Pipeline (Training & Registration)'
 
 - stage: 'Trigger_AML_Pipeline'
