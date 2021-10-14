@@ -13,7 +13,6 @@ trigger:
   paths:
     include:
     - sourcecode/devopspipeline/
-    - sourcecode/devopspipeline/environment.yml
 
 
 variables:
