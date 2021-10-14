@@ -34,6 +34,10 @@ resource_group = os.getenv("RESOURCE_GROUP", default="")
 workspace_name = os.getenv("WORKSPACE_NAME", default="")
 workspace_region = os.getenv("WORKSPACE_REGION", default="")
 
+print('resource_group = ' + str(resource_group))
+print('workspace_name = ' + str(workspace_name))
+print('workspace_region = ' + str(workspace_region))
+
 try:
     # ws = Workspace.from_config()
     ws = Workspace(subscription_id=subscription_id, 
