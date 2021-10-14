@@ -4,7 +4,6 @@ import argparse
 import os
 
 
-
 def main():
 
     subscription_id = os.getenv("SUBSCRIPTION_ID", default="")

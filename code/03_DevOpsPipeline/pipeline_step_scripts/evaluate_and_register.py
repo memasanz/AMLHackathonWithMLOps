@@ -1,81 +1,66 @@
-
 from azureml.core import Run, Workspace, Datastore, Dataset
 from azureml.core.model import Model
 from azureml.data.datapath import DataPath
-
+import pandas as pd
 import os
 import argparse
 import shutil
+import tensorflow as tf
 
-parser = argparse.ArgumentParser("Evaluate model and register if more performant")
-parser.add_argument('--exp_trained_model_pipeline_data', type=str, required=True)
+# #Parse input arguments
+parser = argparse.ArgumentParser("Evaluate autoencoder and register if more performant")
+parser.add_argument('--autoencoder_training_outputs', type=str, required=True)
 
 args, _ = parser.parse_known_args()
-exp_trained_model_pipeline_data = args.exp_trained_model_pipeline_data
-
+autoencoder_training_outputs = args.autoencoder_training_outputs
 
 #Get current run
-run = Run.get_context()
+current_run = Run.get_context()
 
 #Get associated AML workspace
-ws = run.experiment.workspace
+ws = current_run.experiment.workspace
 
 #Get default datastore
 ds = ws.get_default_datastore()
 
 #Get metrics associated with current parent run
-metrics = run.get_metrics()
+metrics = current_run.parent.get_metrics()
+current_model_mse = float(metrics['Mean Squared Error'])
 
-print('current run metrics')
-for key in metrics.keys():
-        print(key, metrics.get(key))
-print('\n')
+#Get tags from current parent run
+tags = current_run.parent.get_tags()
 
+#Get training/testing datasets
+training_dataset = current_run.input_datasets['Autoencoder_Training_Data']
+testing_dataset = current_run.input_datasets['Autoencoder_Testing_Data']
+formatted_datasets = [('Autoencoder_Training_Data', training_dataset), ('Autoencoder_Testing_Data', testing_dataset)]
 
-print('parent run metrics')
-#Get metrics associated with current parent run
-metrics = run.parent.get_metrics()
-
-for key in metrics.keys():
-        print(key, metrics.get(key))
-print('\n')
-
-current_model_AUC = float(metrics['AUC'])
-current_model_accuracy = float(metrics['Accuracy'])
-
-# Get current model from workspace
-model_name = 'diabetes_model'
-model_description = 'Diabetes model'
-model_list = Model.list(ws, name=model_name, latest=True)
-first_registration = len(model_list)==0
-
-updated_tags = {'AUC': current_model_AUC}
-
-print('updated tags')
-print(updated_tags)
+# Get point to PipelineData from previous training step
+training_step_pipeline_data = autoencoder_training_outputs
 
 # Copy autoencoder training outputs to relative path for registration
 relative_model_path = 'model_files'
-run.upload_folder(name=relative_model_path, path=exp_trained_model_pipeline_data)
+current_run.upload_folder(name=relative_model_path, path=training_step_pipeline_data)
 
+# Get current model from workspace
+model_name = 'Autoencoder_PredMaintenance'
+model_description = 'TF/Keras autoencoder for detecting anomalies in multi-variate IoT telemetry data'
+model_list = Model.list(ws, name=model_name, latest=True)
+first_registration = len(model_list)==0
+
+updated_tags = {'Mean Squared Error': metrics['Mean Squared Error'], 'BuildId': tags['BuildId'], 'BuildUri': tags['BuildUri']}
 
 #If no model exists register the current model
 if first_registration:
     print('First model registration.')
-    #model = run.register_model(model_name, model_path='model_files', description=model_description, model_framework='sklearn', model_framework_version=tf.__version__, tags=updated_tags, datasets=formatted_datasets, sample_input_dataset = training_dataset)
-    run.register_model(model_path=relative_model_path, model_name='diabetes_model',
-                   tags=updated_tags,
-                   properties={'AUC': current_model_AUC})
+    model = current_run.register_model(model_name, model_path='model_files', description=model_description, model_framework='Tensorflow/Keras', model_framework_version=tf.__version__, tags=updated_tags, datasets=formatted_datasets, sample_input_dataset = training_dataset)
 else:
     #If a model has been registered previously, check to see if current model 
-    #performs better. If so, register it.
+    #performs better (lower MSE). If so, register it.
     print(dir(model_list[0]))
-    if float(model_list[0].tags['AUC']) < current_model_AUC:
+    if float(model_list[0].tags['Mean Squared Error']) > current_model_mse:
         print('New model performs better than existing model. Register it.')
-        #model = run.register_model(model_name, model_path='model_files', description=model_description, model_framework='Tensorflow/Keras', model_framework_version=tf.__version__, tags=updated_tags, datasets=formatted_datasets, sample_input_dataset = training_dataset)
-        run.register_model(model_path=relative_model_path, model_name='diabetes_model',
-                   tags=updated_tags,
-                   properties={'AUC': current_model_AUC, 'Accuracy': current_model_accuracy})
+        model = current_run.register_model(model_name, model_path='model_files', description=model_description, model_framework='Tensorflow/Keras', model_framework_version=tf.__version__, tags=updated_tags, datasets=formatted_datasets, sample_input_dataset = training_dataset)
     else:
         print('New model does not perform better than existing model. Cancel run.')
-        run.cancel()
+        current_run.parent.cancel()
