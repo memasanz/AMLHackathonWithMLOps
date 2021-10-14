@@ -42,6 +42,10 @@ workspace_name = 'mm-aml-devops-dev'
 resource_group = 'mm-aml-devops-dev-rg'
 workspace_region = 'eastus2'
 
+print('resource_group = ' + str(resource_group))
+print('workspace_name = ' + str(workspace_name))
+print('workspace_region = ' + str(workspace_region))
+
 try:
     # ws = Workspace.from_config()
     ws = Workspace(subscription_id=subscription_id, 
