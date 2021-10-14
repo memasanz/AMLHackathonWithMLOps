@@ -31,6 +31,18 @@ resource_group = os.getenv("RESOURCE_GROUP", default="")
 workspace_name = os.getenv("WORKSPACE_NAME", default="")
 workspace_region = os.getenv("WORKSPACE_REGION", default="")
 
+try:
+    # ws = Workspace.from_config()
+    ws = Workspace(subscription_id=subscription_id, 
+                   resource_group=resource_group, 
+                   workspace_name=workspace_name)
+    print("Workspace configuration succeeded. Skip the workspace creation steps below")
+except:
+    print("Workspace does not exist. Creating workspace")
+    ws = Workspace.create(name=workspace_name, subscription_id=subscription_id, resource_group=resource_group,
+                            location=workspace_region, create_resource_group=True, sku='enterprise', exist_ok=True)
+                            
+
 # Get the default datastore
 default_ds = ws.get_default_datastore()
 
