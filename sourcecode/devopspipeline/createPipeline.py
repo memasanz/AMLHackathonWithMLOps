@@ -38,8 +38,8 @@ print('resource_group = ' + str(resource_group))
 print('workspace_name = ' + str(workspace_name))
 print('workspace_region = ' + str(workspace_region))
 
-workspace_name = 'mm-aml-devops-dev'
-resource_group = 'mm-aml-devops-dev-rg'
+workspace_name = 'mm-aml-dev'
+resource_group = 'mm-machine-learning-dev-rg'
 workspace_region = 'eastus2'
 
 print('resource_group = ' + str(resource_group))
