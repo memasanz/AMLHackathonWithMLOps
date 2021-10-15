@@ -74,7 +74,13 @@ stages:
           echo "##vso[task.setvariable variable=AMLPIPELINEID;isOutput=true]$AMLPIPELINEID"
       name: 'getpipelineid'
       displayName: 'Get Pipeline ID'
-   
+ 
+- stage: 'Trigger_AML_Pipeline'
+  displayName: 'Prod - Run Training and Evaluation Pipeline'
+  condition: succeeded()
+  variables:
+  - group: vgroup-aml-devops-dev
+  jobs:    
    - job: "Run_ML_Pipeline"
     dependsOn: "Get_Pipeline_ID"
     displayName: "Run AML Pipeline"
@@ -91,22 +97,31 @@ stages:
         ExperimentName: '$(EXPERIMENT_NAME)'
         PipelineParameters: '"ParameterAssignments": {}, "tags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}, "StepTags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}'
         
-    - task: AzureCLI@1
-      displayName: 'Find Model'        
-      inputs:
-        azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
-        scriptLocation: inlineScript
-        workingDirectory: $(Build.SourcesDirectory)
-        inlineScript: |
-          set -e # fail on error
-          # Get the model using the build ID tag
-          FOUND_MODEL=$(az ml model list -g $(RESOURCE_GROUP) --workspace-name $(WORKSPACE_NAME) --tag BuildId=$(Build.BuildId) --query '[0]')
-          
-          # If the variable is empty, print and fail
-          [[ -z "$FOUND_MODEL" ]] && { echo "Model was not registered for this run." ; exit 1; }
-          # Write to a file
-          echo $FOUND_MODEL >model.json
-      name: 'getversion'
-      displayName: "Determine if evaluation succeeded and new model is registered (CLI)"
-    - publish: model.json
-      artifact: model
+
+
+steps:
+- task: AzureCLI@1
+  displayName: 'Install AzureML CLI'
+  inputs:
+    azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+    scriptLocation: inlineScript
+    workingDirectory: $(Build.SourcesDirectory)
+    inlineScript: 'az extension add --source https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.27.0-py3-none-any.whl --yes'
+- task: AzureCLI@1
+  inputs:
+    azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+    scriptLocation: inlineScript
+    workingDirectory: $(Build.SourcesDirectory)
+    inlineScript: |
+      set -e # fail on error
+      # Get the model using the build ID tag
+      FOUND_MODEL=$(az ml model list -g $(RESOURCE_GROUP) --workspace-name $(WORKSPACE_NAME) --tag BuildId=$(Build.BuildId) --query '[0]')
+      
+      # If the variable is empty, print and fail
+      [[ -z "$FOUND_MODEL" ]] && { echo "Model was not registered for this run." ; exit 1; }
+      # Write to a file
+      echo $FOUND_MODEL >model.json
+  name: 'getversion'
+  displayName: "Determine if evaluation succeeded and new model is registered (CLI)"
+- publish: model.json
+  artifact: model
