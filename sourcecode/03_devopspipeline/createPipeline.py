@@ -27,18 +27,18 @@ import os
 print('hello')
 
 subscription_id = os.getenv("SUBSCRIPTION_ID", default="")
-
-print('subscription_id = ' + str(subscription_id))
-
 resource_group = os.getenv("RESOURCE_GROUP", default="")
 workspace_name = os.getenv("WORKSPACE_NAME", default="")
 workspace_region = os.getenv("WORKSPACE_REGION", default="")
 cluster_name = os.getenv("CLUSTER_NAME", default="")
+pipeline_name = os.getenv("PIPELINE_NAME", default="")
 
+print('subscription_id = ' + str(subscription_id))
 print('resource_group = ' + str(resource_group))
 print('workspace_name = ' + str(workspace_name))
 print('workspace_region = ' + str(workspace_region))
 print('cluster_name = ' + str(cluster_name))
+print('pipeline_name = ' + str(pipeline_name)
 
 workspace_name = 'mm-aml-dev'
 resource_group = 'mm-machine-learning-dev-rg'
@@ -48,10 +48,12 @@ registered_env_name = "experiment_env"
 experiment_folder = 'exp_pipeline'
 dataset_prefix_name = 'exp'
 cluster_name = "mm-cluster"
+pipeline_name = 'mlops-training-registration-pipeline'
 
 print('resource_group = ' + str(resource_group))
 print('workspace_name = ' + str(workspace_name))
 print('workspace_region = ' + str(workspace_region))
+print('pipeline_name = ' + str(pipeline_name)
 
 try:
     # ws = Workspace.from_config()
@@ -200,7 +202,7 @@ pipeline = Pipeline(workspace=ws, steps=[get_data_step, split_scale_step, train_
 # Create a published version of your pipeline that can be triggered via an authenticated REST API request.
 
 build_id = os.getenv('BUILD_BUILDID', default='1')
-pipeline_name = os.getenv("PIPELINE_NAME", default="mlops-training-registration-pipeline")
+
 
 published_pipeline = pipeline.publish(name = pipeline_name,
                                         version=build_id,

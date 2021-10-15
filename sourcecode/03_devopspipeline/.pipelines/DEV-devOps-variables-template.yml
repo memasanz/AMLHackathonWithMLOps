@@ -24,3 +24,8 @@ variables:
     
   - name: CLUSTER_NAME
     value: mm-cluster
+ 
+  - name: PIPELINE_NAME
+    value: mlops-training-registration-pipeline
+    
+    
