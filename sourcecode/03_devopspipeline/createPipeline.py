@@ -208,7 +208,10 @@ published_pipeline = pipeline.publish(name = pipeline_name,
                                      continue_on_step_failure = False)
 
 
-
+print('***********************')
+print('pipeline_name = ' + pipeline_name)
+print('build_id = ' + build_id)
+print('***********************')
 
 
 
