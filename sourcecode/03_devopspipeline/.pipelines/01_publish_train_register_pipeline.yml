@@ -74,8 +74,7 @@ stages:
           echo "##vso[task.setvariable variable=AMLPIPELINEID;isOutput=true]$AMLPIPELINEID"
       name: 'getpipelineid'
       displayName: 'Get Pipeline ID'
-      
-   - job: "Run_ML_Pipeline"
+  - job: "Run_ML_Pipeline"
     dependsOn: "Get_Pipeline_ID"
     displayName: "Run AML Pipeline"
     timeoutInMinutes: 0
