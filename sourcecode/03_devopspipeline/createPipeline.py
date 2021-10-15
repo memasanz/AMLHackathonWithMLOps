@@ -24,7 +24,7 @@ import os
 
 # Connect to AML Workspace
 
-print('hello')
+print('Create Pipeline Script for Azure DevOps, about to retrieve variables from yml file')
 
 subscription_id = os.getenv("SUBSCRIPTION_ID", default="")
 resource_group = os.getenv("RESOURCE_GROUP", default="")
@@ -38,7 +38,7 @@ print('resource_group = ' + str(resource_group))
 print('workspace_name = ' + str(workspace_name))
 print('workspace_region = ' + str(workspace_region))
 print('cluster_name = ' + str(cluster_name))
-print('pipeline_name = ' + str(pipeline_name)
+print('pipeline_name = ' + str(pipeline_name))
 
 workspace_name = 'mm-aml-dev'
 resource_group = 'mm-machine-learning-dev-rg'
@@ -50,9 +50,12 @@ dataset_prefix_name = 'exp'
 cluster_name = "mm-cluster"
 pipeline_name = 'mlops-training-registration-pipeline'
 
+
+print('subscription_id = ' + str(subscription_id))
 print('resource_group = ' + str(resource_group))
 print('workspace_name = ' + str(workspace_name))
 print('workspace_region = ' + str(workspace_region))
+print('cluster_name = ' + str(cluster_name))
 print('pipeline_name = ' + str(pipeline_name)
 
 try:
