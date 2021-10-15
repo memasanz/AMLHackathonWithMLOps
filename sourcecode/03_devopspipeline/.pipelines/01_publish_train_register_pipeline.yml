@@ -43,3 +43,36 @@ stages:
           # Invoke the Python building and publishing a training pipeline
           python -m createPipeline
       displayName: 'Publish Azure Machine Learning Pipeline'
+
+- stage: 'Trigger_AML_Pipeline'
+  displayName: 'Prod - Run Training and Evaluation Pipeline'
+  condition: succeeded()
+  variables:
+  - group: vgroup-aml-devops-dev
+  - name: BUILD_URI
+    value: '$(SYSTEM.COLLECTIONURI)$(SYSTEM.TEAMPROJECT)/_build/results?buildId=$(BUILD.BUILDID)'
+  jobs:
+  - job: "Get_Pipeline_ID"
+    variables:
+    - group: azureml-variables
+    condition: and(succeeded(), eq(coalesce(variables['auto-trigger-training'], 'true'), 'true'))
+    displayName: "Get Pipeline ID"
+    container: mlops
+    timeoutInMinutes: 0
+    steps:
+    - task: AzureCLI@1
+      inputs:
+        azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+        scriptLocation: inlineScript
+        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+        inlineScript: |
+          set -e # fail on error
+          export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+          python -m GetPipelineID --output_pipeline_id_file "pipeline_id.txt"
+          # Set AMLPIPELINEID variable for next AML Pipeline task in next job
+          AMLPIPELINEID="$(cat pipeline_id.txt)"
+          echo "##vso[task.setvariable variable=AMLPIPELINEID;isOutput=true]$AMLPIPELINEID"
+      name: 'getpipelineid'
+      displayName: 'Get Pipeline ID'
+   
+  
