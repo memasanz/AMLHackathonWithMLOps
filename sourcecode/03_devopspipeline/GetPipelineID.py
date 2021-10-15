@@ -6,11 +6,40 @@ import os
 
 def main():
 
+    print('hello')
+
     subscription_id = os.getenv("SUBSCRIPTION_ID", default="")
     resource_group = os.getenv("RESOURCE_GROUP", default="")
     workspace_name = os.getenv("WORKSPACE_NAME", default="")
     pipeline_name = os.getenv("PIPELINE_NAME", default="")
     build_id = os.getenv("BUILD_BUILDID", default='1')
+    workspace_region = os.getenv("WORKSPACE_REGION", default="")
+    cluster_name = os.getenv("CLUSTER_NAME", default="")
+    
+    
+    print('subscription_id = ' + str(subscription_id))
+    print('build_id = ' + str(build_id))
+    print('resource_group = ' + str(resource_group))
+    print('workspace_name = ' + str(workspace_name))
+    print('workspace_region = ' + str(workspace_region))
+    print('cluster_name = ' + str(cluster_name))
+    print('pipeline_name = ' + str(pipeline_name))
+
+    workspace_name = 'mm-aml-dev'
+    resource_group = 'mm-machine-learning-dev-rg'
+    workspace_region = 'eastus2'
+
+    registered_env_name = "experiment_env"
+    experiment_folder = 'exp_pipeline'
+    dataset_prefix_name = 'exp'
+    cluster_name = "mm-cluster"
+
+    print('resource_group = ' + str(resource_group))
+    print('workspace_name = ' + str(workspace_name))
+    print('workspace_region = ' + str(workspace_region))
+
+
+
 
     parser = argparse.ArgumentParser("register")
     parser.add_argument(
@@ -29,11 +58,12 @@ def main():
 
     # Find the pipeline that was published by the specified build ID
     pipelines = PublishedPipeline.list(aml_workspace)
-    print(pipelines)
+    print('looking for pipeline:' + pipeline_name)
     matched_pipes = []
 
     for p in pipelines:
         if p.name == pipeline_name:
+            print('found' + p.name + ' ' + p.version + ', looking for version:' + p.build_id)
             if p.version == build_id:
                 matched_pipes.append(p)
 
