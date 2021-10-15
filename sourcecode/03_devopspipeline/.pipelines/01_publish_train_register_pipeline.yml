@@ -74,54 +74,36 @@ stages:
           echo "##vso[task.setvariable variable=AMLPIPELINEID;isOutput=true]$AMLPIPELINEID"
       name: 'getpipelineid'
       displayName: 'Get Pipeline ID'
- 
-- stage: 'Trigger_AML_Pipeline'
+      
+- stage: 'Trigger_AML_Pipeline 2'
   displayName: 'Prod - Run Training and Evaluation Pipeline'
   condition: succeeded()
   variables:
   - group: vgroup-aml-devops-dev
-  jobs:    
-   - job: "Run_ML_Pipeline"
-    dependsOn: "Get_Pipeline_ID"
-    displayName: "Run AML Pipeline"
-    timeoutInMinutes: 0
-    pool: server
+  - name: BUILD_URI
+    value: '$(SYSTEM.COLLECTIONURI)$(SYSTEM.TEAMPROJECT)/_build/results?buildId=$(BUILD.BUILDID)'
+  jobs:
+  - job: "Get_Pipeline_ID"
     variables:
-      AMLPIPELINE_ID: $[ dependencies.Get_Pipeline_ID.outputs['getpipelineid.AMLPIPELINEID'] ]
+    - group: vgroup-aml-devops-dev
+    condition: and(succeeded(), eq(coalesce(variables['auto-trigger-training'], 'true'), 'true'))
+    displayName: "Get Pipeline ID"
+    container: mlops
+    timeoutInMinutes: 0
     steps:
-    - task: ms-air-aiagility.vss-services-azureml.azureml-restApi-task.MLPublishedPipelineRestAPITask@0
-      displayName: 'Invoke ML pipeline'
+    - task: AzureCLI@1
       inputs:
         azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
-        PipelineId: '$(AMLPIPELINE_ID)'
-        ExperimentName: '$(EXPERIMENT_NAME)'
-        PipelineParameters: '"ParameterAssignments": {}, "tags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}, "StepTags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}'
-        
-
-
-steps:
-- task: AzureCLI@1
-  displayName: 'Install AzureML CLI'
-  inputs:
-    azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
-    scriptLocation: inlineScript
-    workingDirectory: $(Build.SourcesDirectory)
-    inlineScript: 'az extension add --source https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.27.0-py3-none-any.whl --yes'
-- task: AzureCLI@1
-  inputs:
-    azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
-    scriptLocation: inlineScript
-    workingDirectory: $(Build.SourcesDirectory)
-    inlineScript: |
-      set -e # fail on error
-      # Get the model using the build ID tag
-      FOUND_MODEL=$(az ml model list -g $(RESOURCE_GROUP) --workspace-name $(WORKSPACE_NAME) --tag BuildId=$(Build.BuildId) --query '[0]')
-      
-      # If the variable is empty, print and fail
-      [[ -z "$FOUND_MODEL" ]] && { echo "Model was not registered for this run." ; exit 1; }
-      # Write to a file
-      echo $FOUND_MODEL >model.json
-  name: 'getversion'
-  displayName: "Determine if evaluation succeeded and new model is registered (CLI)"
-- publish: model.json
-  artifact: model
+        scriptLocation: inlineScript
+        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+        inlineScript: |
+          set -e # fail on error
+          export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+          python -m GetPipelineID --output_pipeline_id_file "pipeline_id.txt"
+          # Set AMLPIPELINEID variable for next AML Pipeline task in next job
+          AMLPIPELINEID="$(cat pipeline_id.txt)"
+          echo "##vso[task.setvariable variable=AMLPIPELINEID;isOutput=true]$AMLPIPELINEID"
+      name: 'getpipelineid'
+      displayName: 'Get Pipeline ID'
+   
+ 
