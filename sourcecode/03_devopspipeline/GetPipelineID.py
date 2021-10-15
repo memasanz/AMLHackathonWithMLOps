@@ -33,12 +33,7 @@ def main():
     experiment_folder = 'exp_pipeline'
     dataset_prefix_name = 'exp'
     cluster_name = "mm-cluster"
-
-    print('resource_group = ' + str(resource_group))
-    print('workspace_name = ' + str(workspace_name))
-    print('workspace_region = ' + str(workspace_region))
-
-
+    pipeline_name = 'mlops-training-registration-pipeline'
 
 
     parser = argparse.ArgumentParser("register")
@@ -58,15 +53,20 @@ def main():
 
     # Find the pipeline that was published by the specified build ID
     pipelines = PublishedPipeline.list(aml_workspace)
-    print('looking for pipeline:' + pipeline_name)
+    print('looking for pipeline:' + pipeline_name + ', this is configured in the yml file')
     matched_pipes = []
-
+    bfound = False
+    
     for p in pipelines:
         if p.name == pipeline_name:
+            bfound = True
             print('found' + p.name + ' ' + p.version + ', looking for version:' + p.build_id)
             if p.version == build_id:
                 matched_pipes.append(p)
-
+                
+    if bfound == False:
+        print('unable to find pipeline')
+        
     if(len(matched_pipes) > 1):
         published_pipeline = None
         raise Exception(f"Multiple active pipelines are published for build {build_id}.")  # NOQA: E501
