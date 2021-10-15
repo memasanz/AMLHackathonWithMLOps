@@ -60,9 +60,14 @@ def main():
     for p in pipelines:
         if p.name == pipeline_name:
             bfound = True
-            print('found' + p.name + ' ' + p.version + ', looking for version:' + p.build_id)
+            print('found:' + p.name + ' ' + p.version + ', looking for version:' + p.version)
             if p.version == build_id:
                 matched_pipes.append(p)
+            else:
+                print('Found pipeline name: ' +  p.name + ', but NOT a match on version - pipeline version: ' + p.version + ', build id:' + build_id)
+        else:
+            print('Not a match: ' + p.name)
+            
                 
     if bfound == False:
         print('unable to find pipeline')
