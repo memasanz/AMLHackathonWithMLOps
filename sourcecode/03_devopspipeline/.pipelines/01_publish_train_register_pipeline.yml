@@ -75,7 +75,7 @@ stages:
       name: 'getpipelineid'
       displayName: 'Get Pipeline ID'
       
-- stage: 'Trigger_AML_Pipeline 2'
+- stage: 'Trigger_AML_Pipeline_2'
   displayName: 'Prod - Run Training and Evaluation Pipeline'
   condition: succeeded()
   variables:
