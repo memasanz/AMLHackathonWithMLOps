@@ -17,7 +17,7 @@ steps:
       FOUND_MODEL=$(az ml model list -g $(RESOURCE_GROUP) --workspace-name $(WORKSPACE_NAME) --tag BuildId=$(Build.BuildId) --query '[0]')
       
       # If the variable is empty, print and fail
-      [[ -z "$FOUND_MODEL" ]] && { echo "Model was not registered for this run." ; exit 0; }
+      [[ -z "$FOUND_MODEL" ]] && { echo "Model was not registered for this run." ; }
       # Write to a file
       echo $FOUND_MODEL >model.json
   name: 'getversion'
