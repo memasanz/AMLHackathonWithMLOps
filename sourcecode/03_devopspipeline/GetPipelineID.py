@@ -74,10 +74,10 @@ def main():
         
     if(len(matched_pipes) > 1):
         published_pipeline = None
-        raise Exception(f"Multiple active pipelines are published for build {build_id}.")  # NOQA: E501
+        raise Exception(f"Multiple active pipelines are published for build {build_id}.")  
     elif(len(matched_pipes) == 0):
         published_pipeline = None
-        raise KeyError(f"Unable to find a published pipeline for this build {build_id}")  # NOQA: E501
+        raise KeyError(f"Unable to find a published pipeline for this build {build_id}")  
     else:
         published_pipeline = matched_pipes[0]
         print("published pipeline id is", published_pipeline.id)

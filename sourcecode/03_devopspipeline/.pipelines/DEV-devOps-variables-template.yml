@@ -28,4 +28,5 @@ variables:
   - name: PIPELINE_NAME
     value: mlops-training-registration-pipeline
     
-    
+  - name: EXPERIMENT_NAME
+    value: mlops-experiment-to-run-pipeline 
