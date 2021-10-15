@@ -1,0 +1,23 @@
+# Pipeline template that defines common runtime environment variables used across all environments.
+variables:
+
+  # Azure ML Variables
+  - name: EXPERIMENT_NAME
+    value: Autoencoder-MLOps-Run
+  
+  # AML Compute Cluster Config
+  - name: AML_ENV_NAME
+    value: autoencoder_training_env
+  - name: VM_SIZE
+    value: STANDARD_D3_V2
+  - name: AML_COMPUTE_CLUSTER_NAME
+    value: cpucluster
+  - name: AML_CLUSTER_MIN_NODES
+    value: 0
+  - name: AML_CLUSTER_MAX_NODES
+    value: 1
+  
+  - name: SOURCES_DIR_TRAIN
+    value: 03-AML_AzDO_MLOpsDevelopment
+  - name: SCORE_SCRIPT
+    value: scoring/score.py
