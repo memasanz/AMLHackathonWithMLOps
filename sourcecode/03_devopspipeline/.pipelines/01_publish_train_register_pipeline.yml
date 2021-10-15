@@ -75,8 +75,8 @@ stages:
       name: 'getpipelineid'
       displayName: 'Get Pipeline ID'
       
-- stage: 'Trigger_AML_Pipeline2'
-  displayName: 'Trigger_AML_Pipeline2'
+- stage: 'Arg'
+  displayName: 'Arg'
   condition: succeeded()
   variables:
   - group: vgroup-aml-devops-dev
@@ -104,6 +104,6 @@ stages:
           AMLPIPELINEID="$(cat pipeline_id.txt)"
           echo "##vso[task.setvariable variable=AMLPIPELINEID;isOutput=true]$AMLPIPELINEID"
       name: 'getpipelineid'
-      displayName: 'Get Pipeline ID'
+      displayName: 'Arg'
    
  
