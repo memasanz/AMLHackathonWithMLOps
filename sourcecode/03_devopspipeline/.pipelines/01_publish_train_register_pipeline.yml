@@ -75,8 +75,8 @@ stages:
       name: 'getpipelineid'
       displayName: 'Get Pipeline ID'
       
-- stage: 'Trigger_AML_Pipeline_2'
-  displayName: 'Prod - Run Training and Evaluation Pipeline'
+- stage: 'Trigger_AML_Pipeline2'
+  displayName: 'Trigger_AML_Pipeline2'
   condition: succeeded()
   variables:
   - group: vgroup-aml-devops-dev
