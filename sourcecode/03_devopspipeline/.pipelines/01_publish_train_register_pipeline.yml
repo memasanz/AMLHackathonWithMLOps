@@ -24,7 +24,7 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-- stage: 'BuildPipeline'
+- stage: 'Build Pipeline'
   displayName: 'BuildPipeline'
   jobs:
   - job: "BuildPipeline"
@@ -75,4 +75,38 @@ stages:
       name: 'getpipelineid'
       displayName: 'Get Pipeline ID'
    
-  
+   - job: "Run_ML_Pipeline"
+    dependsOn: "Get_Pipeline_ID"
+    displayName: "Run AML Pipeline"
+    timeoutInMinutes: 0
+    pool: server
+    variables:
+      AMLPIPELINE_ID: $[ dependencies.Get_Pipeline_ID.outputs['getpipelineid.AMLPIPELINEID'] ]
+    steps:
+    - task: ms-air-aiagility.vss-services-azureml.azureml-restApi-task.MLPublishedPipelineRestAPITask@0
+      displayName: 'Invoke ML pipeline'
+      inputs:
+        azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+        PipelineId: '$(AMLPIPELINE_ID)'
+        ExperimentName: '$(EXPERIMENT_NAME)'
+        PipelineParameters: '"ParameterAssignments": {}, "tags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}, "StepTags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}'
+        
+    - task: AzureCLI@1
+      displayName: 'Find Model'        
+      inputs:
+        azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+        scriptLocation: inlineScript
+        workingDirectory: $(Build.SourcesDirectory)
+        inlineScript: |
+          set -e # fail on error
+          # Get the model using the build ID tag
+          FOUND_MODEL=$(az ml model list -g $(RESOURCE_GROUP) --workspace-name $(WORKSPACE_NAME) --tag BuildId=$(Build.BuildId) --query '[0]')
+          
+          # If the variable is empty, print and fail
+          [[ -z "$FOUND_MODEL" ]] && { echo "Model was not registered for this run." ; exit 1; }
+          # Write to a file
+          echo $FOUND_MODEL >model.json
+      name: 'getversion'
+      displayName: "Determine if evaluation succeeded and new model is registered (CLI)"
+    - publish: model.json
+      artifact: model
