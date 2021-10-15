@@ -56,10 +56,9 @@ print('resource_group = ' + str(resource_group))
 print('workspace_name = ' + str(workspace_name))
 print('workspace_region = ' + str(workspace_region))
 print('cluster_name = ' + str(cluster_name))
-print('pipeline_name = ' + str(pipeline_name)
+print('pipeline_name = ' + str(pipeline_name))
 
 try:
-    # ws = Workspace.from_config()
     ws = Workspace(subscription_id=subscription_id, 
                    resource_group=resource_group, 
                    workspace_name=workspace_name)
