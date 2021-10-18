@@ -94,7 +94,7 @@ stages:
         
   - job: "Run_ML_Report"
    dependsOn: "Run_ML_Pipeline"
-   displayName: "Run AML Pipeline"
+   displayName: "Run AML Report"
    timeoutInMinutes: 0
    pool: server
    variables:
