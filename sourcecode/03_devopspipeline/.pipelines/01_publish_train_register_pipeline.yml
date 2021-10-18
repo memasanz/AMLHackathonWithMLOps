@@ -96,7 +96,7 @@ stages:
     displayName: "Run ML Report"
     timeoutInMinutes: 0
     variables:
-      MODEL_FOUND: $[ dependencies.Get_Pipeline_ID.outputs['getpipelineid.AMLPIPELINEID'] ]
+      MODEL_FOUND: $(az ml model list -g $(RESOURCE_GROUP) --workspace-name $(WORKSPACE_NAME) --tag BuildId=$(Build.BuildId) --query '[0]')
 
     steps:
     - task: AzureCLI@1
