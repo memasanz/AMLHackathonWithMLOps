@@ -30,3 +30,7 @@ variables:
     
   - name: EXPERIMENT_NAME
     value: mlops-experiment-to-run-pipeline 
+    
+  - name: MODEL_NAME
+    value: diabetes_model  
+  
