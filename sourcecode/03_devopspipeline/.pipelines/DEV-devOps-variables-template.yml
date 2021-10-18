@@ -34,3 +34,7 @@ variables:
   - name: MODEL_NAME
     value: diabetes_model  
   
+  - name: BUILD_ModelID
+    value: '0'    
+  
+  
