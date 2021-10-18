@@ -92,11 +92,12 @@ stages:
         PipelineParameters: '"ParameterAssignments": {"batch_size": "$(BATCH_SIZE)", "num_epochs": "$(NUM_EPOCHS)"}, "tags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}, "StepTags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}'
         
   - job: "Run_ML_Report"
+   dependsOn: "Run_ML_Pipeline"
    displayName: "Run AML Report"
    timeoutInMinutes: 0
    pool: server
    variables:
-     MODEL_FOUND: '$(az ml model list -g $(RESOURCE_GROUP) --workspace-name $(WORKSPACE_NAME) --tag BuildId=$(Build.BuildId) --query '[0]')'
+     MODEL_FOUND: $[ dependencies.Get_Pipeline_ID.outputs['getpipelineid.AMLPIPELINEID'] ]
   
     steps:
     - task: AzureCLI@1
