@@ -93,7 +93,7 @@ stages:
         PipelineParameters: '"ParameterAssignments": {"batch_size": "$(BATCH_SIZE)", "num_epochs": "$(NUM_EPOCHS)"}, "tags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}, "StepTags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}'
         
   - job: "Run_ML_Report"
-   dependsOn: "Get_Pipeline_ID"
+   dependsOn: "Run_ML_Pipeline"
    displayName: "Run AML Pipeline"
    timeoutInMinutes: 0
    pool: server
