@@ -82,7 +82,6 @@ stages:
     variables:
       AMLPIPELINE_ID: $[ dependencies.Get_Pipeline_ID.outputs['getpipelineid.AMLPIPELINEID'] ]
 
-      
     steps:
     - task: ms-air-aiagility.vss-services-azureml.azureml-restApi-task.MLPublishedPipelineRestAPITask@0
       displayName: 'Invoke ML pipeline'
@@ -98,7 +97,7 @@ stages:
    timeoutInMinutes: 0
    pool: server
    variables:
-     MODEL_FOUND: $(az ml model list -g $(RESOURCE_GROUP) --workspace-name $(WORKSPACE_NAME) --tag BuildId=$(Build.BuildId) --query '[0]')
+     MODEL_FOUND: '$(az ml model list -g $(RESOURCE_GROUP) --workspace-name $(WORKSPACE_NAME) --tag BuildId=$(Build.BuildId) --query '[0]')'
   
     steps:
     - task: AzureCLI@1
