@@ -96,7 +96,7 @@ stages:
     displayName: "Run ML Report"
     timeoutInMinutes: 0
     variables:
-      MODEL_FOUND: $(az ml model show -n $MODEL_NAME -g $RESOURCE_GROUP --workspace-name WORKSPACE_NAME --version $(BUILD_ModelID))
+      MODEL_FOUND: $(az ml model show -n $MODEL_NAME -g $RESOURCE_GROUP --workspace-name $WORKSPACE_NAME --version $(BUILD_ModelID))
 
     steps:
     - task: AzureCLI@1
