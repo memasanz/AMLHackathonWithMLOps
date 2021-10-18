@@ -7,6 +7,11 @@ steps:
     workingDirectory: $(Build.SourcesDirectory)
     inlineScript: 'az extension add --source https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.27.0-py3-none-any.whl --yes'
 - task: AzureCLI@1
+  condition: succeeded()
+  variables:
+  - group: vgroup-aml-devops-dev
+  - name: MODEL_FOUND
+  value: '$(az ml model list -g $(RESOURCE_GROUP) --workspace-name $(WORKSPACE_NAME) --tag BuildId=$(Build.BuildId) --query '[0]')'
   inputs:
     azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
     scriptLocation: inlineScript
@@ -24,3 +29,4 @@ steps:
   displayName: "Determine if evaluation succeeded and new model is registered (CLI)"
 - publish: model.json
   artifact: model
+  condition: eq(variables['MODEL_FOUND'], 'true')
