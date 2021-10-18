@@ -95,7 +95,6 @@ stages:
     dependsOn: "Run_ML_Pipeline"
     displayName: "Run ML Report"
     timeoutInMinutes: 0
-    pool: server
     variables:
       MODEL_FOUND: $[ dependencies.Get_Pipeline_ID.outputs['getpipelineid.AMLPIPELINEID'] ]
 
