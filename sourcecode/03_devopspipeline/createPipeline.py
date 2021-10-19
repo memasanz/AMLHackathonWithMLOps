@@ -45,9 +45,9 @@ print('model_name = ' + str(model_name))
 build_id = os.getenv("BUILD_BUILDID", default='1')
 print(build_id)
 
-build_number = os.getenv("build_number")
+build_number = os.getenv("build_number", default = '1')
 
-
+print('build_number = ' + build_number)
 
 
 #workspace_name = 'mm-aml-dev'
