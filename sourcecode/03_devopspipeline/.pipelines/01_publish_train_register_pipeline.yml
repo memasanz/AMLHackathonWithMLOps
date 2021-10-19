@@ -128,11 +128,10 @@ stages:
           [[ -z "$FOUND_MODEL" ]] && { echo "Model was not registered for this run." ; FOUND_MODEL = ''; exit 0; }
           # Write to a file
           echo $FOUND_MODEL >model.json
-          
       name: 'getversion'
       displayName: "Determine if evaluation succeeded and new model is registered (CLI)"
     - publish: model.json
       artifact: model
-      condition: ne(variables['FOUND_MODEL'], '')
+
         
   
