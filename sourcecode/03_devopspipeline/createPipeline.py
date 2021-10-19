@@ -45,6 +45,10 @@ print('model_name = ' + str(model_name))
 build_id = os.getenv("BUILD_BUILDID", default='1')
 print(build_id)
 
+build_number = os.getenv("build_number")
+
+
+
 
 #workspace_name = 'mm-aml-dev'
 #resource_group = 'mm-machine-learning-dev-rg'
@@ -193,13 +197,19 @@ train_model_step = PythonScriptStep(
 #Evaluate and register model here
 #Compare metrics from current model and register if better than current
 #best model
+
+pbuild_number = PipelineParameter(name='build_number', default_value=build_number)
+pmodel_name = PipelineParameter(name='model_name', default_value=model_name)
+
+
 evaluate_and_register_step = PythonScriptStep(
     name='Evaluate and Register Model',
     script_name='evaluate_and_register.py',
     arguments=[
                 '--exp_trained_model_pipeline_data', exp_trained_model_pipeline_data,
-                '--model_name', model_name,
-                '--build_id', build_id],
+                '--model_name', pmodel_name,
+                '--build_number', pbuild_number],
+
     
     inputs=[ exp_trained_model_pipeline_data.as_input('exp_trained_model_pipeline_data')],
     compute_target=pipeline_cluster,
