@@ -40,6 +40,10 @@ print('workspace_region = ' + str(workspace_region))
 print('cluster_name = ' + str(cluster_name))
 print('pipeline_name = ' + str(pipeline_name))
 
+build_id = os.getenv("BUILD_BUILDID", default='1')
+print(build_id)
+
+
 workspace_name = 'mm-aml-dev'
 resource_group = 'mm-machine-learning-dev-rg'
 workspace_region = 'eastus2'
@@ -190,7 +194,11 @@ train_model_step = PythonScriptStep(
 evaluate_and_register_step = PythonScriptStep(
     name='Evaluate and Register Model',
     script_name='evaluate_and_register.py',
-    arguments=['--exp_trained_model_pipeline_data', exp_trained_model_pipeline_data],
+    arguments=[
+                '--exp_trained_model_pipeline_data', exp_trained_model_pipeline_data,
+                '--model_name', model_name,
+                '--build_id', build_id],
+    
     inputs=[ exp_trained_model_pipeline_data.as_input('exp_trained_model_pipeline_data')],
     compute_target=pipeline_cluster,
     source_directory='./pipeline_step_scripts',

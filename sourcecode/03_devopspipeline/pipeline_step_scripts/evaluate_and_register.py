@@ -9,10 +9,15 @@ import shutil
 
 parser = argparse.ArgumentParser("Evaluate model and register if more performant")
 parser.add_argument('--exp_trained_model_pipeline_data', type=str, required=True)
+parser.add_argument('--model_name', type=string, required=True)
+parser.add_argument('--build_id', type=int, required=True)
+
 
 
 args, _ = parser.parse_known_args()
 exp_trained_model_pipeline_data = args.exp_trained_model_pipeline_data
+model_name = args.model_name
+build_id = args.build_id
 
 
 #Get current run
@@ -50,7 +55,7 @@ model_description = 'Diabetes model'
 model_list = Model.list(ws, name=model_name, latest=True)
 first_registration = len(model_list)==0
 
-build_id = os.getenv("BUILD_BUILDID", default='1')
+#build_id = os.getenv("BUILD_BUILDID", default='1')
 
 print('build_id =' + build_id)
 
