@@ -125,7 +125,7 @@ stages:
           echo "found model"
           echo $FOUND_MODEL
           # If the variable is empty, print and fail
-          [[ -z "$FOUND_MODEL" ]] && { echo "Model was not registered for this run." ; FOUND_MODEL = ''; exit 0; }
+          [[ -z "$FOUND_MODEL" ]] && { echo "Model was not registered for this run." ; $FOUND_MODEL = ''; exit 0; }
           # Write to a file
           echo $FOUND_MODEL >model.json
       name: 'getversion'
