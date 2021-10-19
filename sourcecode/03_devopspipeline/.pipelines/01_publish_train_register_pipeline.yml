@@ -89,7 +89,7 @@ stages:
         azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
         PipelineId: '$(AMLPIPELINE_ID)'
         ExperimentName: '$(EXPERIMENT_NAME)'
-        PipelineParameters: '"ParameterAssignments": {"build_id": "$(Build.BuildId)", "model_name": "$(MODEL_NAME)"}, "tags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}, "StepTags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}'
+        PipelineParameters: '"ParameterAssignments": {"model_name": "$(MODEL_NAME)", "build_number": "$(Build.BuildId)"}, "tags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}, "StepTags": {"BuildId": "$(Build.BuildId)", "BuildUri": "$(BUILD_URI)"}'
         
         
   - job: "Run_ML_Report"
