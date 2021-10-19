@@ -131,7 +131,6 @@ stages:
           echo $MODEL_FOUND
           # Write to a file
           echo $FOUND_MODEL >model.json
-\
       name: 'getversion'
       displayName: "Determine if evaluation succeeded and new model is registered (CLI)"
     - publish: model.json
