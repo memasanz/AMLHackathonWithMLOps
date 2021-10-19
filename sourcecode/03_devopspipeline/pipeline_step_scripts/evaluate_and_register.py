@@ -50,7 +50,9 @@ model_description = 'Diabetes model'
 model_list = Model.list(ws, name=model_name, latest=True)
 first_registration = len(model_list)==0
 
-build_id = os.getenv('BUILD_BUILDID', default='1')
+build_id = os.getenv("BUILD_BUILDID", default='1')
+
+print('build_id =' + build_id)
 
 updated_tags = {'AUC': current_model_AUC, 'BUILD_ID' : build_id}
 
@@ -68,7 +70,7 @@ if first_registration:
     #model = run.register_model(model_name, model_path='model_files', description=model_description, model_framework='sklearn', model_framework_version=tf.__version__, tags=updated_tags, datasets=formatted_datasets, sample_input_dataset = training_dataset)
     run.register_model(model_path=relative_model_path, model_name='diabetes_model',
                    tags=updated_tags,
-                   properties={'AUC': current_model_AUC})
+                   properties={'AUC': current_model_AUC, 'BUILD_ID' : build_id})
 else:
     #If a model has been registered previously, check to see if current model 
     #performs better. If so, register it.
