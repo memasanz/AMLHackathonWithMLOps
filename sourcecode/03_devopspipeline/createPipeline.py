@@ -32,6 +32,7 @@ workspace_name = os.getenv("WORKSPACE_NAME", default="")
 workspace_region = os.getenv("WORKSPACE_REGION", default="")
 cluster_name = os.getenv("CLUSTER_NAME", default="")
 pipeline_name = os.getenv("PIPELINE_NAME", default="")
+model_name = os.getenv("MODEL_NAME", default="")
 
 print('subscription_id = ' + str(subscription_id))
 print('resource_group = ' + str(resource_group))
@@ -39,20 +40,21 @@ print('workspace_name = ' + str(workspace_name))
 print('workspace_region = ' + str(workspace_region))
 print('cluster_name = ' + str(cluster_name))
 print('pipeline_name = ' + str(pipeline_name))
+print('model_name = ' + str(model_name))
 
 build_id = os.getenv("BUILD_BUILDID", default='1')
 print(build_id)
 
 
-workspace_name = 'mm-aml-dev'
-resource_group = 'mm-machine-learning-dev-rg'
-workspace_region = 'eastus2'
+#workspace_name = 'mm-aml-dev'
+#resource_group = 'mm-machine-learning-dev-rg'
+#workspace_region = 'eastus2'
 
 registered_env_name = "experiment_env"
 experiment_folder = 'exp_pipeline'
 dataset_prefix_name = 'exp'
-cluster_name = "mm-cluster"
-pipeline_name = 'mlops-training-registration-pipeline'
+#cluster_name = "mm-cluster"
+#pipeline_name = 'mlops-training-registration-pipeline'
 
 
 print('subscription_id = ' + str(subscription_id))
