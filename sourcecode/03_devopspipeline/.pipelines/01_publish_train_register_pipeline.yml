@@ -128,6 +128,6 @@ stages:
       displayName: "Determine if evaluation succeeded and new model is registered (CLI)"
     - publish: model.json
       artifact: model
-      condition: eq(variables['MODEL_FOUND'], 'true')
+      condition: ne(variables['FOUND_MODEL'], '')
         
   
