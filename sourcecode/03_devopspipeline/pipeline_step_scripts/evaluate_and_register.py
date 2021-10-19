@@ -9,13 +9,14 @@ import shutil
 
 parser = argparse.ArgumentParser("Evaluate model and register if more performant")
 parser.add_argument('--exp_trained_model_pipeline_data', type=str, required=True)
-parser.add_argument('--model_name', type=string, required=True)
-parser.add_argument('--build_number', type=string, required=True)
+parser.add_argument('--model_name', type=str, required=True)
+parser.add_argument('--build_number', type=str, required=True)
 
 
 
 args, _ = parser.parse_known_args()
 exp_trained_model_pipeline_data = args.exp_trained_model_pipeline_data
+
 model_name = args.model_name
 build_number = args.build_number
 
@@ -58,7 +59,7 @@ first_registration = len(model_list)==0
 build_id = os.getenv("BUILD_BUILDID", default='1')
 
 print('build_id =' + build_id)
-print('build_number = ' + build_number)
+print('build_number = ' +  build_number)
 
 updated_tags = {'AUC': current_model_AUC, 'build_number' : build_number}
 
