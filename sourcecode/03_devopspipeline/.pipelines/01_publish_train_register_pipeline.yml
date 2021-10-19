@@ -97,7 +97,7 @@ stages:
     displayName: "Run ML Report"
     timeoutInMinutes: 0
     variables:
-      MODEL_FOUND: $(az ml model list -n $MODEL_NAME -g $RESOURCE_GROUP --workspace-name $WORKSPACE_NAME --tag=build_number=$Build.BuildId)
+      MODEL_FOUND: $(az ml model list -n $MODEL_NAME -g $RESOURCE_GROUP --workspace-name $WORKSPACE_NAME --tag=build_number=$(Build.BuildId))
     steps:
     - task: AzureCLI@1
       displayName: 'Install AzureML CLI'
@@ -116,9 +116,9 @@ stages:
           set -e # fail on error
           # Get the model using the build ID tag
           echo $WORKSPACE_NAME
-          echo $Build.BuildId
+          echo $(Build.BuildId)
           echo $MODEL_FOUND
-          FOUND_MODEL=$(az ml model list -n $MODEL_NAME -g $RESOURCE_GROUP --workspace-name $WORKSPACE_NAME --tag=build_number=$Build.BuildId)
+          FOUND_MODEL=$(az ml model list -n $MODEL_NAME -g $RESOURCE_GROUP --workspace-name $WORKSPACE_NAME --tag=build_number=$(Build.BuildId))
           echo $FOUND_MODEL
           # If the variable is empty, print and fail
           [[ -z "$FOUND_MODEL" ]] && { echo "Model was not registered for this run." ; exit 0; }
