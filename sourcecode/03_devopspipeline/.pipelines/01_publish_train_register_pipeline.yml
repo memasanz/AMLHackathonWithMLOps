@@ -123,11 +123,15 @@ stages:
           echo "found model"
           echo $FOUND_MODEL
           # If the variable is empty, print and fail
-          [[ -z "$FOUND_MODEL" ]] && { echo "Model was not registered for this run." ; echo '##vso[task.setvariable variable=Model_FOUND]false'}
-          # Write to a file
-          echo $FOUND_MODEL >model.json
+          [[ -z "$FOUND_MODEL" ]] && { 
+          echo "Model was not registered for this run." ; 
+          echo '##vso[task.setvariable variable=MODEL_FOUND]false'
+          }
           echo "model found"
           echo $MODEL_FOUND
+          # Write to a file
+          echo $FOUND_MODEL >model.json
+\
       name: 'getversion'
       displayName: "Determine if evaluation succeeded and new model is registered (CLI)"
     - publish: model.json
