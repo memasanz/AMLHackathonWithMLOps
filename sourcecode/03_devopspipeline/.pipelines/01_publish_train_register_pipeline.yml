@@ -99,7 +99,7 @@ stages:
     variables:
       - group: vgroup-aml-devops-dev
       - name: MODEL_FOUND
-        value: '$(az ml model list -n $MODEL_NAME -g $RESOURCE_GROUP --workspace-name $WORKSPACE_NAME --tag=build_number=$(Build.BuildId) --query [0])'
+        value: 'true'
     steps:
     - task: AzureCLI@1
       displayName: 'Install AzureML CLI'
@@ -125,13 +125,14 @@ stages:
           echo "found model"
           echo $FOUND_MODEL
           # If the variable is empty, print and fail
-          [[ -z "$FOUND_MODEL" ]] && { echo "Model was not registered for this run." ; $FOUND_MODEL = ''; exit 0; }
+          [[ -z "$FOUND_MODEL" ]] && { echo "Model was not registered for this run." ; $FOUND_MODEL = 'false'; exit 0; }
           # Write to a file
           echo $FOUND_MODEL >model.json
       name: 'getversion'
       displayName: "Determine if evaluation succeeded and new model is registered (CLI)"
     - publish: model.json
       artifact: model
+      condition: eq(variables['MODEL_FOUND'], 'true')
 
         
   
