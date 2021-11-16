@@ -25,9 +25,6 @@ def main():
     print('cluster_name = ' + str(cluster_name))
     print('pipeline_name = ' + str(pipeline_name))
 
-    workspace_name = 'mm-aml-dev'
-    resource_group = 'mm-machine-learning-dev-rg'
-    workspace_region = 'eastus2'
 
     registered_env_name = "experiment_env"
     experiment_folder = 'exp_pipeline'
