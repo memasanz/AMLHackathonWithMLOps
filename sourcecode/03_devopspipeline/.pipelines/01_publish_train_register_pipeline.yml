@@ -117,9 +117,11 @@ stages:
         inlineScript: |
           set -e # fail on error
           # Get the model using the build ID tag
+          echo $MODEL_NAME
+          echo $RESOURCE_GROUP
           echo $WORKSPACE_NAME
           echo $(Build.BuildId)
-          FOUND_MODEL=$(az ml model list -n $MODEL_NAME -g $RESOURCE_GROUP --workspace-name $WORKSPACE_NAME --tag=build_number=$(Build.BuildId) --query [0])
+          FOUND_MODEL=$(az ml model list -n $MODEL_NAME -g $RESOURCE_GROUP --workspace-name $WORKSPACE_NAME --tag=build_number=$(Build.BuildId))
           echo "found model"
           echo $FOUND_MODEL
           # If the variable is empty, print and fail
