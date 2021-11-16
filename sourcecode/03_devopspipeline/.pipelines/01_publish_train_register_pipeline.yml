@@ -121,23 +121,8 @@ stages:
           echo $RESOURCE_GROUP
           echo $WORKSPACE_NAME
           echo $(Build.BuildId)
-          FOUND_MODEL=$(az ml model list -n $MODEL_NAME -g $RESOURCE_GROUP --workspace-name $WORKSPACE_NAME --tag=build_number=$(Build.BuildId))
-          echo "found model"
-          echo $FOUND_MODEL
-          # If the variable is empty, print and fail
-          [[ -z "$FOUND_MODEL" ]] && { 
-          echo "Model was not registered for this run." ; 
-          echo '##vso[task.setvariable variable=MODEL_FOUND]false'
-          }
-          echo "model found"
-          echo $MODEL_FOUND
-          # Write to a file
-          echo $FOUND_MODEL >model.json
-      name: 'getversion'
-      displayName: "Determine if evaluation succeeded and new model is registered (CLI)"
-    - publish: model.json
-      artifact: model
-      condition: eq(variables.MODEL_FOUND, 'true')
+          #FOUND_MODEL=$(az ml model list -n $MODEL_NAME -g $RESOURCE_GROUP --workspace-name $WORKSPACE_NAME --tag=build_number=$(Build.BuildId))
+ 
 
         
   
