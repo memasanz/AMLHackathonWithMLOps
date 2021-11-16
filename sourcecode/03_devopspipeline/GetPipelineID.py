@@ -29,7 +29,6 @@ def main():
     registered_env_name = "experiment_env"
     experiment_folder = 'exp_pipeline'
     dataset_prefix_name = 'exp'
-    cluster_name = "mm-cluster"
     pipeline_name = 'mlops-training-registration-pipeline'
 
 
