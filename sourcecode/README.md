@@ -1,7 +1,7 @@
 Folder Overview
 ---------------
 
--   01_LocalDevelopment
+-   01_LocalDevelopment: No automation – does not include MLOps capabilties
 
     -   LocalTraining.ipynb : Example Notebook for creating a model and
         deploying a rest endpoint
