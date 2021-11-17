@@ -121,7 +121,7 @@ stages:
           echo $RESOURCE_GROUP
           echo $WORKSPACE_NAME
           echo $(Build.BuildId)
-          #FOUND_MODEL=$(az ml model list -n $MODEL_NAME -g $RESOURCE_GROUP --workspace-name $WORKSPACE_NAME --tag=build_number=$(Build.BuildId))
+
  
 
         
