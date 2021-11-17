@@ -20,20 +20,20 @@ Folder Overview
 
 -   03_devopspipeline
 
-    -   00_DevOpsPipelineSetup.ipynb: Sets up an environment variable – update
-        your AzureDevOps
+    -   00_DevOpsPipelineSetup.ipynb: sets up your scripts to be leveraged for
+        creating the ML Pipeline
+
+    -   [00_setup_devOps_environment.yml](https://github.com/memasanz/AMLHackathonWithMLOps/blob/main/sourcecode/03_devopspipeline/.pipelines/00_setup_devOps_environment.yml)
+        – yml file to create a pipeline to run 1 time to setup your AzureDevOps
+        Variable group
 
 >   If you don’t want to run this pipeline, then you can manually create the
 >   variable group
 
 ![](media/798a9748d5d1f68225157cae6416902a.png)
 
->   Graphical user interface, text, application, email Description automatically
->   generated
-
--   00_setup_devOps_environment.yml
-
--   01_publish_train_register_pipeline.yml
+-   01_publish_train_register_pipeline.yml – Azure DevOps pipeline to create an
+    AzureML pipeline and run it for retraining
 
 -   DEV-devOps-variables-template.yml
 
