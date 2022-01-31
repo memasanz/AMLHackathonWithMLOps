@@ -35,6 +35,8 @@ pipeline_name = os.getenv("PIPELINE_NAME", default="")
 model_name = os.getenv("MODEL_NAME", default="")
 build_id = os.getenv("BUILD_BUILDID", default='1')
 
+print(subscription_id)
+
 build_number = os.getenv("build_number", default = '1')
 
 print('subscription_id = ' + str(subscription_id))
@@ -73,7 +75,7 @@ except:
     print("Workspace does not exist. Creating workspace")
     ws = Workspace.create(name=workspace_name, subscription_id=subscription_id, resource_group=resource_group,
                             location=workspace_region, create_resource_group=True, sku='enterprise', exist_ok=True)
-                            
+
 
 # Get the default datastore
 default_ds = ws.get_default_datastore()
@@ -95,12 +97,12 @@ except ComputeTargetException:
         pipeline_cluster.wait_for_completion(show_output=True)
     except Exception as ex:
         print(ex)
-        
+
 import os
 files = [f for f in os.listdir('.') if os.path.isfile(f)]
 for f in files:
     print(f)
-    
+
 
 conda_yml_file = 'environment.yml'
 
@@ -190,9 +192,9 @@ train_model_step = PythonScriptStep(
     runconfig=run_config
 )
 
-#Evaluate and register model here
-#Compare metrics from current model and register if better than current
-#best model
+# Evaluate and register model here
+# Compare metrics from current model and register if better than current
+# best model
 
 pbuild_number = PipelineParameter(name='build_number', default_value=build_number)
 pmodel_name = PipelineParameter(name='model_name', default_value=model_name)
