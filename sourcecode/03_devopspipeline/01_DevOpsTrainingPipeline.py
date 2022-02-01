@@ -56,7 +56,7 @@ from azureml.exceptions import WebserviceException
 
 
 # Connect to AML Workspace
-ws = Workspace.from_config()
+ws = Workspace.from_config('./config/config_dev.json')
 
 # Get the default datastore
 default_ds = ws.get_default_datastore()
@@ -335,7 +335,7 @@ import json
 import shutil
 import os
 
-outputfolder = run_details['runId']
+outputfolder = 'run_outputs'
 os.makedirs(outputfolder, exist_ok=True)
 
 if (final_model_version != inital_model_version):
