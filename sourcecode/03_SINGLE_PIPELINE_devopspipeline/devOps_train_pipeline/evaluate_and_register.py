@@ -134,7 +134,7 @@ if first_registration:
                    tags=updated_tags,
                    properties={'AUC': current_model_AUC})
 
-    model_explain()
+    #model_explain()
 else:
     #If a model has been registered previously, check to see if current model 
     #performs better. If so, register it.
@@ -146,7 +146,7 @@ else:
                    tags=updated_tags,
                    properties={'AUC': current_model_AUC, 'Accuracy': current_model_accuracy})
 
-        model_explain()
+        #model_explain()
         
         # Output accuracy to file
         with open(deploy_file, 'w+') as f:

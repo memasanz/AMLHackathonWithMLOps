@@ -1,0 +1,46 @@
+# Continuous Integration (CI) pipeline that orchestrates the training, evaluation, and registration of the diabetes_regression model.
+
+resources:
+  containers:
+  - container: mlops
+    image: mcr.microsoft.com/mlops/python:latest
+
+pr: none
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - sourcecode/03_devopspipeline
+
+
+variables:
+- template: variable_template.yml
+- group: vgroup-aml-devops-dev
+
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: 'BuildPipeline'
+  displayName: 'BuildPipeline'
+  jobs:
+  - job: "BuildPipeline"
+    displayName: "BuildPipeline"
+    container: mlops
+    timeoutInMinutes: 0
+    steps:
+    - task: AzureCLI@1
+      inputs:
+        azureSubscription: $(ml-ws-connection)
+        scriptLocation: inlineScript
+        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+        inlineScript: |
+          set -e # fail on error
+          export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+          # Invoke the Python building and publishing a training pipeline
+          python -m 01_DevOpsPipeline.py
+      displayName: 'Run Azure Machine Learning Pipeline'
+
