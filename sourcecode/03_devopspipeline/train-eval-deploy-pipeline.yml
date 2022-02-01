@@ -32,6 +32,7 @@ stages:
     container: mlops
     timeoutInMinutes: 0
     steps:
+   
     - task: AzureCLI@1
       inputs:
         azureSubscription: $(ml-ws-connection)
@@ -41,6 +42,14 @@ stages:
           set -e # fail on error
           export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
           # Invoke the Python building and publishing a training pipeline
-          python -m 01_DevOpsPipeline.py
+          python -m 01_DevOpsTrainingPipeline
       displayName: 'Run Azure Machine Learning Pipeline'
-
+      
+    - task: AzureCLI@1
+      displayName: 'Create directory'
+      inputs:
+        azureSubscription: $(ml-ws-connection)
+        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+        scriptLocation: inlineScript
+        scriptType: 'bash'
+        inlineScript: 'mkdir metadata && mkdir models'
