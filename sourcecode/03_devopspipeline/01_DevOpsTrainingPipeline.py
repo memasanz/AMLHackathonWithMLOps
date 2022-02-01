@@ -56,7 +56,7 @@ from azureml.exceptions import WebserviceException
 
 
 # Connect to AML Workspace
-ws = Workspace.from_config('./config/config_dev.json')
+ws = Workspace.from_config('./.config/config_dev.json')
 
 # Get the default datastore
 default_ds = ws.get_default_datastore()
