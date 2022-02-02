@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # coding: utf-8
-# %%
 
 # ## MLOps with Azure ML Pipelines
 # 
@@ -14,7 +13,7 @@
 # 
 # First we will set some key variables to be leveraged inside the notebook
 
-# %%
+# In[1]:
 
 
 registered_env_name = "experiment_env"
@@ -25,7 +24,7 @@ cluster_name = "mm-cluster"
 
 # Import required packages
 
-# %%
+# In[2]:
 
 
 # Import required packages
@@ -52,11 +51,20 @@ from azureml.exceptions import WebserviceException
 # 
 # Connect to the AML workspace and the default datastore. To run an AML Pipeline, we will want to create compute if a compute cluster is not already available
 
-# %%
+# In[3]:
 
 
 # Connect to AML Workspace
-ws = Workspace.from_config('./.config/config_dev.json')
+try:
+    ws = Workspace.from_config('./.config/config_dev.json')
+except:
+    subscription_id = os.getenv("SUBSCRIPTION_ID", default="")
+    resource_group = os.getenv("RESOURCE_GROUP", default="")
+    workspace_name = os.getenv("WORKSPACE_NAME", default="")
+    print('subscription_id = ' + str(subscription_id))
+    print('resource_group = ' + str(resource_group))
+    print('workspace_name = ' + str(workspace_name))
+    ws = Workspace(subscription_id=subscription_id, resource_group=resource_group, workspace_name=workspace_name)
 
 # Get the default datastore
 default_ds = ws.get_default_datastore()
@@ -80,13 +88,7 @@ except ComputeTargetException:
         print(ex)
 
 
-# %%
-
-
-
-
-
-# %%
+# In[4]:
 
 
 try:
@@ -101,23 +103,39 @@ print('inital_model_version = ' + str(inital_model_version))
 # 
 # The RunConfiguration defines the environment used across all the python steps.  There are a variety of ways of setting up an environment.  An environment holds the required python packages needed for your code to execute on a compute cluster
 
-# %%
+# In[5]:
 
 
 import os
+import shutil
 # Create a folder for the pipeline step files
 os.makedirs(experiment_folder, exist_ok=True)
 
 print(experiment_folder)
 
 
-# %%
+# In[6]:
+
+
+run_path = './run_outputs'
+
+try:
+    shutil.rmtree(run_path)
+except:
+    print('continue directory does not exits')
+
+
+# In[7]:
+
+
 conda_yml_file = './'+ experiment_folder+ '/environment.yml'
 
-# %%
+
+# In[8]:
 
 
 # Create a Python environment for the experiment (from a .yml file)
+
 env = Environment.from_conda_specification("experiment_env", conda_yml_file)
 
 
@@ -127,13 +145,13 @@ run_config.environment = env
 run_config.environment.docker.base_image = DEFAULT_CPU_IMAGE
 
 
-# %%
+# In[9]:
 
 
 registered_env_name
 
 
-# %%
+# In[10]:
 
 
 from azureml.core import Environment
@@ -167,7 +185,7 @@ print ("Run configuration created.")
 # 
 # These can be viewed in the Datasets tab directly in the AML Portal
 
-# %%
+# In[11]:
 
 
 #get data from storage location and save to exp_raw_data
@@ -186,7 +204,7 @@ exp_testing_data   = OutputFileDatasetConfig(name='Exp_Testing_Data', destinatio
 
 # ### Create Python Script Step
 
-# %%
+# In[12]:
 
 
 get_data_step = PythonScriptStep(
@@ -203,7 +221,7 @@ get_data_step = PythonScriptStep(
 
 # ### Split Data Step
 
-# %%
+# In[13]:
 
 
 split_scale_step = PythonScriptStep(
@@ -220,13 +238,13 @@ split_scale_step = PythonScriptStep(
 )
 
 
-# %%
+# In[14]:
 
 
 ### TrainingStep
 
 
-# %%
+# In[15]:
 
 
 #Raw data will be preprocessed and registered as train/test datasets
@@ -252,7 +270,7 @@ train_model_step = PythonScriptStep(
 
 # ### Evaluate Model Step
 
-# %%
+# In[16]:
 
 
 #Evaluate and register model here
@@ -286,26 +304,26 @@ evaluate_and_register_step = PythonScriptStep(
 # ## Create Pipeline
 # Create an Azure ML Pipeline by specifying the steps to be executed. Note: based on the dataset dependencies between steps, exection occurs logically such that no step will execute unless all of the necessary input datasets have been generated.
 
-# %%
+# In[17]:
 
 
 pipeline = Pipeline(workspace=ws, steps=[get_data_step, split_scale_step, train_model_step, evaluate_and_register_step])
 
 
-# %%
+# In[18]:
 
 
 experiment = Experiment(ws, 'ML_Automation_DevOpsPipelineTraining')
 run = experiment.submit(pipeline)
 
 
-# %%
+# In[19]:
 
 
 run.wait_for_completion(show_output=True)
 
 
-# %%
+# In[20]:
 
 
 import json
@@ -328,7 +346,20 @@ print(run_details['runId'])
 
 # ## Compare Results
 
-# %%
+# In[23]:
+
+
+
+if final_model_version > 0:
+    model_details = {
+        'name' : final_model.name,
+        'version': final_model.version,
+        'properties': final_model.properties
+    }
+    print(model_details)
+
+
+# In[24]:
 
 
 import json
@@ -341,7 +372,7 @@ os.makedirs(outputfolder, exist_ok=True)
 if (final_model_version != inital_model_version):
     print('new model registered')
     with open(os.path.join(outputfolder, 'deploy_details.json'), "w+") as f:
-        f.write(str(final_model))
+        f.write(str(model_details))
     model_name = 'diabetes_model_remote'
     model_description = 'Diabetes model remote'
     model_list = Model.list(ws, name=model_name, latest=True)
@@ -354,4 +385,10 @@ with open(os.path.join(outputfolder, 'run_details.json'), "w+") as f:
 
 with open(os.path.join(outputfolder, "run_number.json"), "w+") as f:
     f.write(run_details['runId'])
+
+
+# In[ ]:
+
+
+
 
