@@ -43,21 +43,28 @@ stages:
 #           echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy.txt)"
 #           echo $DEPLOY
 
-    - task: Bash@3
-      inputs:
-        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-        targetType: 'inline'
-        script: |
-          echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy_details.json | jq)"
-          echo $DEPLOY
-
 #     - task: Bash@3
 #       inputs:
 #         workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
 #         targetType: 'inline'
 #         script: |
-#           echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy_details.json | jq {'nextstep'})"
+#           echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy_details.json | jq)"
 #           echo $DEPLOY
+
+    - task: Bash@3
+      inputs:
+        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+        targetType: 'inline'
+        script: |
+          echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy_details.json | jq {'nextstep'})"
+          echo $DEPLOY
+          
+    - task: Bash@3
+      inputs:
+        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+        targetType: 'inline'
+        script: |
+          echo $DEPLOY
 
 #     - task: Bash@3
 #       inputs:
