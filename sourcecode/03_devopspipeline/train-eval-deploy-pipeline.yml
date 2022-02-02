@@ -35,6 +35,14 @@ stages:
     timeoutInMinutes: 0
     steps:
    
+    - task: Bash@3
+      inputs:
+        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+        targetType: 'inline'
+        script: |
+          DEPLOY = $(cat ./run_outputs/deploy_details.json  jq | {'nextstep'})
+          echo $DEPLOY
+          
     - task: AzureCLI@1
       inputs:
         azureSubscription: $(ml-ws-connection)
