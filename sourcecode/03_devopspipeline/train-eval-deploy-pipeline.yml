@@ -102,7 +102,7 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       
     - task: AzureCLI@1
-      condition: ${{ eq(1, variables['deploy']) }}
+      condition: ${{ eq(1, variables['DEPLOY']) }}
       inputs:
         azureSubscription: $(ml-ws-connection)
         scriptLocation: inlineScript
