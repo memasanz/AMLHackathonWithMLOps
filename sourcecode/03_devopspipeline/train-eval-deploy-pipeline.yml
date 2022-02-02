@@ -51,7 +51,7 @@ stages:
       inputs:
         workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
         targetType: 'inline'
-        script: echo "##vso[task.setvariable variable=deploy;]cat ./run_outputs/deploy_details.json  jq | {'deploy'}"
+        script: echo "##vso[task.setvariable variable=deploy;]cat ./run_outputs/deploy_details.json  jq | {'nextstep'}"
 
     - task: CopyFiles@2
       inputs:
