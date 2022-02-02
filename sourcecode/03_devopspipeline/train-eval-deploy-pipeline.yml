@@ -81,7 +81,13 @@ stages:
           echo 'was equal'
       displayName: 'check if equal'
       
-      
+    - task: Bash@3
+      inputs:
+        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+        targetType: 'inline'
+        script: |
+          echo 'deploy'
+          echo $DEPLOY      
     - task: AzureCLI@1
       inputs:
         azureSubscription: $(ml-ws-connection)
