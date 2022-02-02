@@ -346,7 +346,7 @@ print(run_details['runId'])
 
 # ## Compare Results
 
-# In[23]:
+# In[26]:
 
 
 
@@ -354,12 +354,13 @@ if final_model_version > 0:
     model_details = {
         'name' : final_model.name,
         'version': final_model.version,
-        'properties': final_model.properties
+        'properties': final_model.properties,
+        'deploy': 'deploy'
     }
     print(model_details)
 
 
-# In[24]:
+# In[25]:
 
 
 import json
