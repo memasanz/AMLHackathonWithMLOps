@@ -51,7 +51,16 @@ stages:
           echo 'deploy'
           echo $DEPLOY
   
-
+    - task: AzureCLI@1
+      condition: ${{ eq(3, variables['DEPLOY']) }}
+      inputs:
+        azureSubscription: $(ml-ws-connection)
+        scriptLocation: inlineScript
+        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+        inlineScript: |
+          echo 'was equal'
+      displayName: 'DeployACI'
+      
 
     - task: AzureCLI@1
       inputs:
