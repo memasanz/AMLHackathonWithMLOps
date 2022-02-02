@@ -48,39 +48,9 @@ stages:
         workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
         targetType: 'inline'
         script: |
+          echo 'deploy'
           echo $DEPLOY
-          
-#     - task: Bash@3
-#       inputs:
-#         workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-#         targetType: 'inline'
-#         script: |
-#           echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy_details.json | jq)"
-#           echo $DEPLOY
-
-#     - task: Bash@3
-#       inputs:
-#         workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-#         targetType: 'inline'
-#         script: |
-#           echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy_details.json | jq {'nextstep'})"
-#           echo $DEPLOY
-
-    - task: Bash@3
-      inputs:
-        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-        targetType: 'inline'
-        script: |
-          echo '##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy_details.json | jq {"nextstep"})'
-          echo $DEPLOY
-
-    - task: Bash@3
-      inputs:
-        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-        targetType: 'inline'
-        script: |
-          echo $DEPLOY
-
+  
 
 
     - task: AzureCLI@1
@@ -124,7 +94,7 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       
     - task: AzureCLI@1
-      condition: ${{ containsValue('deploy', variables['deploy']) }}
+      condition: ${{ eq(1, variables['deploy']) }}
       inputs:
         azureSubscription: $(ml-ws-connection)
         scriptLocation: inlineScript
