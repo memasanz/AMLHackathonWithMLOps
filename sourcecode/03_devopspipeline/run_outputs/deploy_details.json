@@ -1,1 +1,0 @@
-{'name': 'diabetes_model_remote', 'version': 16, 'properties': {'AUC': '0.8483377282451863', 'Accuracy': '0.774'}}
