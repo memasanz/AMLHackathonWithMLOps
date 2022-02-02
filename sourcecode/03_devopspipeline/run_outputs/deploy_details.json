@@ -1,1 +1,1 @@
-{"name": "diabetes_model_remote", "version": 18, "properties": {"AUC": "0.8483377282451863", "Accuracy": "0.774"}, "nextstep": "deploy"}
+{"name": "diabetes_model_remote", "version": 18, "properties": {"AUC": "0.8483377282451863", "Accuracy": "0.774"}, "nextstep": "4"}
