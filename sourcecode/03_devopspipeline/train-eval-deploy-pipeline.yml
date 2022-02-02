@@ -59,7 +59,7 @@ stages:
         workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
         inlineScript: |
           echo 'was equal'
-      displayName: 'DeployACI'
+      displayName: 'check if equal'
       
 
     - task: AzureCLI@1
