@@ -52,7 +52,7 @@ stages:
           echo $DEPLOY
   
     - task: AzureCLI@1
-      condition: ${{ eq(3, variables['DEPLOY']) }}
+      condition: ${{ eq('3', variables['DEPLOY']) }}
       inputs:
         azureSubscription: $(ml-ws-connection)
         scriptLocation: inlineScript
