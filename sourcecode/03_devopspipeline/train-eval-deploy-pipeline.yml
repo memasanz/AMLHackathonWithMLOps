@@ -40,7 +40,7 @@ stages:
         workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
         targetType: 'inline'
         script: |
-          DEPLOY = $(cat ./run_outputs/deploy_details.json  | jq {'nextstep'})
+          DEPLOY = $(cat ./run_outputs/deploy_details.json  | jq)
           echo $DEPLOY
           
     - task: AzureCLI@1
