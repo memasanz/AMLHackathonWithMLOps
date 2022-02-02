@@ -19,7 +19,7 @@ variables:
 - template: variable_template.yml
 - group: vgroup-aml-devops-dev
 - name: DEPLOY
-  value: 'no'
+  value: 0
 
 
 pool:
@@ -61,7 +61,7 @@ stages:
         workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
         targetType: 'inline'
         script: |
-          DEPLOY = $(cat ./run_outputs/deploy.txt)
+          DEPLOY = '$(cat ./run_outputs/deploy.txt)'
           echo $DEPLOY
 
     - task: CopyFiles@2
