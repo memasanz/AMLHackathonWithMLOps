@@ -392,7 +392,7 @@ with open(os.path.join(outputfolder, "run_number.json"), "w+") as f:
     f.write(run_details['runId'])
     
 with open(os.path.join(outputfolder, "deploy.txt"), "w+") as f:
-    f.write(deploy)
+    f.write(str(deploy))
 
 
 # %%
