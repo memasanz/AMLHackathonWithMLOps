@@ -15,13 +15,6 @@ trigger:
     - sourcecode/03_devopspipeline
 
 
-variables:
-- template: variable_template.yml
-- group: vgroup-aml-devops-dev
-- name: DEPLOY
-  value: 0
-
-
 pool:
   vmImage: ubuntu-latest
 
@@ -56,7 +49,7 @@ stages:
         workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
         targetType: 'inline'
         script: |
-          echo "##vso[task.setvariable variable=deployme;isOutput=true]value"
+          echo "##vso[task.setvariable variable=deployme;isOutput=true]$(cat ./run_outputs/deploy.txt)"
       displayName: 'Setting Deploy Status'
       name: 'setoutput'
           
@@ -87,6 +80,19 @@ stages:
     #     publishLocation: 'Container'
     #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       
+    - task: AzureCLI@1
+      condition: ${{ eq(1, $(setoutput.deployme)) }}
+      inputs:
+        azureSubscription: $(ml-ws-connection)
+        scriptLocation: inlineScript
+        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+        inlineScript: |
+          set -e # fail on error
+          export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+          # Invoke the Python building and publishing a training pipeline
+          python -m 02_DeployACI
+      displayName: 'DeployACI'
+
     - task: AzureCLI@1
       condition: ${{ eq(1, variables['DEPLOYME']) }}
       inputs:
