@@ -86,16 +86,20 @@ stages:
     #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       
     - task: AzureCLI@1
-      condition: ${{ eq('test', variables['setoutput.deployme']) }}
       inputs:
         azureSubscription: $(ml-ws-connection)
         scriptLocation: inlineScript
         workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
         inlineScript: |
-          set -e # fail on error
-          export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-          # Invoke the Python building and publishing a training pipeline
-          python -m 02_DeployACI
+          if $(setoutput.deployme)
+          then
+            set -e # fail on error
+            export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+            # Invoke the Python building and publishing a training pipeline
+            python -m 02_DeployACI
+          else:
+            echo 'no work needed'
+          fi
       displayName: 'DeployACI'
 
     # - task: AzureCLI@1
