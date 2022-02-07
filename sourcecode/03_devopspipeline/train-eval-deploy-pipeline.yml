@@ -41,7 +41,6 @@ stages:
         targetType: 'inline'
         script: |
           echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy.txt)"
-
           
     - task: Bash@3
       inputs:
@@ -62,7 +61,7 @@ stages:
       displayName: 'check if equal'
       
     - task: AzureCLI@1
-      condition: ${{ eq(3, variables['DEPLOY']) }}
+      condition: ${{ eq(3, variables['DEPLOYME']) }}
       inputs:
         azureSubscription: $(ml-ws-connection)
         scriptLocation: inlineScript
@@ -72,7 +71,17 @@ stages:
       displayName: 'check if equal'
       
     - task: AzureCLI@1
-      condition: ${{ eq(3, variables['DEPLOY']) }}
+      condition: ${{ eq(1, $DEPLOYME) }}
+      inputs:
+        azureSubscription: $(ml-ws-connection)
+        scriptLocation: inlineScript
+        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+        inlineScript: |
+          echo 'was equal'
+      displayName: 'check if equal'
+
+        - task: AzureCLI@1
+      condition: ${{ eq(3, $DEPLOYME) }}
       inputs:
         azureSubscription: $(ml-ws-connection)
         scriptLocation: inlineScript
@@ -108,6 +117,12 @@ stages:
         script: |
           echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy.txt)"
 
+    - task: Bash@3
+      inputs:
+        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+        targetType: 'inline'
+        script: |
+          echo "##vso[task.setvariable variable=DEPLOYME;isOutput=true]$(cat ./run_outputs/deploy.txt)"
           
     - task: Bash@3
       inputs:
@@ -137,7 +152,7 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       
     - task: AzureCLI@1
-      condition: ${{ eq(1, variables['DEPLOY']) }}
+      condition: ${{ eq(1, variables['DEPLOYME']) }}
       inputs:
         azureSubscription: $(ml-ws-connection)
         scriptLocation: inlineScript
