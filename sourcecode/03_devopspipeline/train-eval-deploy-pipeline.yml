@@ -98,7 +98,7 @@ stages:
             # Invoke the Python building and publishing a training pipeline
             python -m 02_DeployACI
             echo 'model deployed'
-          else:
+          else
             echo 'no work needed'
           fi
       displayName: 'DeployACI'
