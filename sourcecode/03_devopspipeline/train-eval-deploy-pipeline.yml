@@ -93,15 +93,15 @@ stages:
           python -m 02_DeployACI
       displayName: 'DeployACI'
 
-    - task: AzureCLI@1
-      condition: ${{ eq(test, variables['deployme']) }}
-      inputs:
-        azureSubscription: $(ml-ws-connection)
-        scriptLocation: inlineScript
-        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-        inlineScript: |
-          set -e # fail on error
-          export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-          # Invoke the Python building and publishing a training pipeline
-          python -m 02_DeployACI
-      displayName: 'DeployACI'
+    # - task: AzureCLI@1
+    #   condition: ${{ eq(test, variables['deployme']) }}
+    #   inputs:
+    #     azureSubscription: $(ml-ws-connection)
+    #     scriptLocation: inlineScript
+    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+    #     inlineScript: |
+    #       set -e # fail on error
+    #       export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+    #       # Invoke the Python building and publishing a training pipeline
+    #       python -m 02_DeployACI
+    #   displayName: 'DeployACI'
