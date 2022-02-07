@@ -71,7 +71,7 @@ stages:
       displayName: 'check if equal'
       
     - task: AzureCLI@1
-      condition: ${{ eq(1, ${DEPLOYME}) }}
+      condition: ${{ eq(1, variables['DEPLOYME']) }}
       inputs:
         azureSubscription: $(ml-ws-connection)
         scriptLocation: inlineScript
