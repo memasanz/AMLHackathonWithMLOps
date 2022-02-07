@@ -14,6 +14,11 @@ trigger:
     include:
     - sourcecode/03_devopspipeline
 
+variables:
+- template: variable_template.yml
+- group: vgroup-aml-devops-dev
+- name: DEPLOY
+  value: 0
 
 pool:
   vmImage: ubuntu-latest
