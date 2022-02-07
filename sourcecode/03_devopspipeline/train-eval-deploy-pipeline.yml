@@ -56,8 +56,9 @@ stages:
         workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
         targetType: 'inline'
         script: |
-          echo "##vso[task.setvariable variable=DEPLOYME;isOutput=true]value"
+          echo "##vso[task.setvariable variable=deployme;isOutput=true]value"
       displayName: 'Setting Deploy Status'
+      name: 'setoutput'
           
     - task: Bash@3
       inputs:
@@ -65,7 +66,7 @@ stages:
         targetType: 'inline'
         script: |
           echo 'deploy'
-          echo $DEPLOYME
+          echo $(setoutput.deployme)
           
     # - task: CopyFiles@2
     #   inputs:
