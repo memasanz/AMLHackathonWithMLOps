@@ -35,20 +35,20 @@ stages:
     timeoutInMinutes: 0
     steps:
    
-    - task: Bash@3
-      inputs:
-        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-        targetType: 'inline'
-        script: |
-          echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy.txt)"
+    # - task: Bash@3
+    #   inputs:
+    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+    #     targetType: 'inline'
+    #     script: |
+    #       echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy.txt)"
           
-    - task: Bash@3
-      inputs:
-        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-        targetType: 'inline'
-        script: |
-          echo 'deploy'
-          echo $DEPLOY
+    # - task: Bash@3
+    #   inputs:
+    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+    #     targetType: 'inline'
+    #     script: |
+    #       echo 'deploy'
+    #       echo $DEPLOY
   
     # - task: AzureCLI@1
     #   condition: ${{ eq('3', variables['DEPLOY']) }}
@@ -113,6 +113,7 @@ stages:
         targetType: 'inline'
         script: |
           echo "##vso[task.setvariable variable=DEPLOYME;isOutput=true]$(cat ./run_outputs/deploy.txt)"
+      displayName: 'Setting Deploy Status'
           
     - task: Bash@3
       inputs:
