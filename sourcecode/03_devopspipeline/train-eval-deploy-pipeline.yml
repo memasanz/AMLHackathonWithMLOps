@@ -91,7 +91,7 @@ stages:
         scriptLocation: inlineScript
         workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
         inlineScript: |
-          if $(setoutput.deployme) == 'test'
+          if [ $(setoutput.deployme) -eq 'test' ]
           then
             set -e # fail on error
             export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
