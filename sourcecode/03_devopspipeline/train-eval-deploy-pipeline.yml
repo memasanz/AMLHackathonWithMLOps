@@ -35,77 +35,21 @@ stages:
     timeoutInMinutes: 0
     steps:
    
-    # - task: Bash@3
-    #   inputs:
-    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-    #     targetType: 'inline'
-    #     script: |
-    #       echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy.txt)"
-          
-    # - task: Bash@3
-    #   inputs:
-    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-    #     targetType: 'inline'
-    #     script: |
-    #       echo 'deploy'
-    #       echo $DEPLOY
-  
-    # - task: AzureCLI@1
-    #   condition: ${{ eq('3', variables['DEPLOY']) }}
-    #   inputs:
-    #     azureSubscription: $(ml-ws-connection)
-    #     scriptLocation: inlineScript
-    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-    #     inlineScript: |
-    #       echo 'was equal'
-    #   displayName: 'check if equal'
-      
-    # - task: AzureCLI@1
-    #   condition: ${{ eq(3, variables['DEPLOYME']) }}
-    #   inputs:
-    #     azureSubscription: $(ml-ws-connection)
-    #     scriptLocation: inlineScript
-    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-    #     inlineScript: |
-    #       echo 'was equal'
-    #   displayName: 'check if equal'
-      
-    # - task: AzureCLI@1
-    #   condition: ${{ eq(1, variables['DEPLOYME']) }}
-    #   inputs:
-    #     azureSubscription: $(ml-ws-connection)
-    #     scriptLocation: inlineScript
-    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-    #     inlineScript: |
-    #       echo 'was equal'
-    #   displayName: 'check if equal'
-      
-    # - task: Bash@3
-    #   inputs:
-    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-    #     targetType: 'inline'
-    #     script: |
-    #       echo 'deploy'
-    #       echo $DEPLOY      
-    - task: AzureCLI@1
-      inputs:
-        azureSubscription: $(ml-ws-connection)
-        scriptLocation: inlineScript
-        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-        inlineScript: |
-          set -e # fail on error
-          export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-          # Invoke the Python building and publishing a training pipeline
-          python -m 01_DevOpsTrainingPipeline
-      displayName: 'Run Azure Machine Learning Pipeline'
 
 
-    # - task: Bash@3
+    # - task: AzureCLI@1
     #   inputs:
+    #     azureSubscription: $(ml-ws-connection)
+    #     scriptLocation: inlineScript
     #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-    #     targetType: 'inline'
-    #     script: |
-    #       echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy.txt)"
+    #     inlineScript: |
+    #       set -e # fail on error
+    #       export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+    #       # Invoke the Python building and publishing a training pipeline
+    #       python -m 01_DevOpsTrainingPipeline
+    #   displayName: 'Run Azure Machine Learning Pipeline'
+
+
 
     - task: Bash@3
       inputs:
@@ -123,24 +67,24 @@ stages:
           echo 'deploy'
           echo $DEPLOYME
           
-    - task: CopyFiles@2
-      inputs:
-        sourceFolder: '$(Build.SourcesDirectory)/sourcecode/03_devopspipeline'
-        contents: '**/run_outputs/*' 
-        targetFolder: '$(Build.ArtifactStagingDirectory)' 
-        #cleanTargetFolder: false # Optional
-        #overWrite: false # Optional
-        #flattenFolders: false # Optional
-        #preserveTimestamp: false # Optional
-        #retryCount: 0 # Optional
-        #ignoreMakeDirErrors: false # Optional
+    # - task: CopyFiles@2
+    #   inputs:
+    #     sourceFolder: '$(Build.SourcesDirectory)/sourcecode/03_devopspipeline'
+    #     contents: '**/run_outputs/*' 
+    #     targetFolder: '$(Build.ArtifactStagingDirectory)' 
+    #     #cleanTargetFolder: false # Optional
+    #     #overWrite: false # Optional
+    #     #flattenFolders: false # Optional
+    #     #preserveTimestamp: false # Optional
+    #     #retryCount: 0 # Optional
+    #     #ignoreMakeDirErrors: false # Optional
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: drop'
-      inputs:
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    # - task: PublishBuildArtifacts@1
+    #   displayName: 'Publish Artifact: drop'
+    #   inputs:
+    #     ArtifactName: 'drop'
+    #     publishLocation: 'Container'
+    #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       
     - task: AzureCLI@1
       condition: ${{ eq(1, variables['DEPLOYME']) }}
