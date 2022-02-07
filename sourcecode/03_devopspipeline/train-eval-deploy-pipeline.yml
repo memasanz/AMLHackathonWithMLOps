@@ -18,7 +18,7 @@ variables:
 - template: variable_template.yml
 - group: vgroup-aml-devops-dev
 - name: DEPLOY
-  value: test
+  value: deploy
 
 pool:
   vmImage: ubuntu-latest
