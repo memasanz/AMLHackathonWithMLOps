@@ -35,17 +35,17 @@ stages:
    
 
 
-    # - task: AzureCLI@1
-    #   inputs:
-    #     azureSubscription: $(ml-ws-connection)
-    #     scriptLocation: inlineScript
-    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-    #     inlineScript: |
-    #       set -e # fail on error
-    #       export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-    #       # Invoke the Python building and publishing a training pipeline
-    #       python -m 01_DevOpsTrainingPipeline
-    #   displayName: 'Run Azure Machine Learning Pipeline'
+    - task: AzureCLI@1
+      inputs:
+        azureSubscription: $(ml-ws-connection)
+        scriptLocation: inlineScript
+        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+        inlineScript: |
+          set -e # fail on error
+          export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+          # Invoke the Python building and publishing a training pipeline
+          python -m 01_DevOpsTrainingPipeline
+      displayName: 'Run Azure Machine Learning Pipeline'
 
 
 
@@ -66,24 +66,24 @@ stages:
           echo 'deploy'
           echo $(setoutput.deployme)
           
-    # - task: CopyFiles@2
-    #   inputs:
-    #     sourceFolder: '$(Build.SourcesDirectory)/sourcecode/03_devopspipeline'
-    #     contents: '**/run_outputs/*' 
-    #     targetFolder: '$(Build.ArtifactStagingDirectory)' 
-    #     #cleanTargetFolder: false # Optional
-    #     #overWrite: false # Optional
-    #     #flattenFolders: false # Optional
-    #     #preserveTimestamp: false # Optional
-    #     #retryCount: 0 # Optional
-    #     #ignoreMakeDirErrors: false # Optional
+    - task: CopyFiles@2
+      inputs:
+        sourceFolder: '$(Build.SourcesDirectory)/sourcecode/03_devopspipeline'
+        contents: '**/run_outputs/*' 
+        targetFolder: '$(Build.ArtifactStagingDirectory)' 
+        #cleanTargetFolder: false # Optional
+        #overWrite: false # Optional
+        #flattenFolders: false # Optional
+        #preserveTimestamp: false # Optional
+        #retryCount: 0 # Optional
+        #ignoreMakeDirErrors: false # Optional
 
-    # - task: PublishBuildArtifacts@1
-    #   displayName: 'Publish Artifact: drop'
-    #   inputs:
-    #     ArtifactName: 'drop'
-    #     publishLocation: 'Container'
-    #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+      inputs:
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       
     - task: AzureCLI@1
       inputs:
@@ -101,16 +101,3 @@ stages:
             echo 'no work needed'
           fi
       displayName: 'DeployACI'
-
-    # - task: AzureCLI@1
-    #   condition: ${{ eq(test, variables['deployme']) }}
-    #   inputs:
-    #     azureSubscription: $(ml-ws-connection)
-    #     scriptLocation: inlineScript
-    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-    #     inlineScript: |
-    #       set -e # fail on error
-    #       export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-    #       # Invoke the Python building and publishing a training pipeline
-    #       python -m 02_DeployACI
-    #   displayName: 'DeployACI'
