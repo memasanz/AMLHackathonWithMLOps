@@ -80,7 +80,7 @@ stages:
           echo 'was equal'
       displayName: 'check if equal'
 
-        - task: AzureCLI@1
+    - task: AzureCLI@1
       condition: ${{ eq(3, $DEPLOYME) }}
       inputs:
         azureSubscription: $(ml-ws-connection)
