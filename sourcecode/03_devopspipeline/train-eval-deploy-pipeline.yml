@@ -50,43 +50,43 @@ stages:
           echo 'deploy'
           echo $DEPLOY
   
-    - task: AzureCLI@1
-      condition: ${{ eq('3', variables['DEPLOY']) }}
-      inputs:
-        azureSubscription: $(ml-ws-connection)
-        scriptLocation: inlineScript
-        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-        inlineScript: |
-          echo 'was equal'
-      displayName: 'check if equal'
+    # - task: AzureCLI@1
+    #   condition: ${{ eq('3', variables['DEPLOY']) }}
+    #   inputs:
+    #     azureSubscription: $(ml-ws-connection)
+    #     scriptLocation: inlineScript
+    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+    #     inlineScript: |
+    #       echo 'was equal'
+    #   displayName: 'check if equal'
       
-    - task: AzureCLI@1
-      condition: ${{ eq(3, variables['DEPLOYME']) }}
-      inputs:
-        azureSubscription: $(ml-ws-connection)
-        scriptLocation: inlineScript
-        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-        inlineScript: |
-          echo 'was equal'
-      displayName: 'check if equal'
+    # - task: AzureCLI@1
+    #   condition: ${{ eq(3, variables['DEPLOYME']) }}
+    #   inputs:
+    #     azureSubscription: $(ml-ws-connection)
+    #     scriptLocation: inlineScript
+    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+    #     inlineScript: |
+    #       echo 'was equal'
+    #   displayName: 'check if equal'
       
-    - task: AzureCLI@1
-      condition: ${{ eq(1, variables['DEPLOYME']) }}
-      inputs:
-        azureSubscription: $(ml-ws-connection)
-        scriptLocation: inlineScript
-        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-        inlineScript: |
-          echo 'was equal'
-      displayName: 'check if equal'
+    # - task: AzureCLI@1
+    #   condition: ${{ eq(1, variables['DEPLOYME']) }}
+    #   inputs:
+    #     azureSubscription: $(ml-ws-connection)
+    #     scriptLocation: inlineScript
+    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+    #     inlineScript: |
+    #       echo 'was equal'
+    #   displayName: 'check if equal'
       
-    - task: Bash@3
-      inputs:
-        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-        targetType: 'inline'
-        script: |
-          echo 'deploy'
-          echo $DEPLOY      
+    # - task: Bash@3
+    #   inputs:
+    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+    #     targetType: 'inline'
+    #     script: |
+    #       echo 'deploy'
+    #       echo $DEPLOY      
     - task: AzureCLI@1
       inputs:
         azureSubscription: $(ml-ws-connection)
@@ -100,12 +100,12 @@ stages:
       displayName: 'Run Azure Machine Learning Pipeline'
 
 
-    - task: Bash@3
-      inputs:
-        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-        targetType: 'inline'
-        script: |
-          echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy.txt)"
+    # - task: Bash@3
+    #   inputs:
+    #     workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
+    #     targetType: 'inline'
+    #     script: |
+    #       echo "##vso[task.setvariable variable=DEPLOY;]$(cat ./run_outputs/deploy.txt)"
 
     - task: Bash@3
       inputs:
@@ -120,7 +120,7 @@ stages:
         targetType: 'inline'
         script: |
           echo 'deploy'
-          echo $DEPLOY
+          echo $DEPLOYME
           
     - task: CopyFiles@2
       inputs:
