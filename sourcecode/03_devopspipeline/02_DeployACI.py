@@ -49,11 +49,20 @@ import logging
 # 
 # Connect to the AML workspace and the default datastore. To run an AML Pipeline, we will want to create compute if a compute cluster is not already available
 
-# In[13]:
+# In[ ]:
 
 
 # Connect to AML Workspace
-ws = Workspace.from_config('./' + experiment_folder + '/config-dev.json')
+try:
+    ws = Workspace.from_config('./.config/config_dev.json')
+except:
+    subscription_id = os.getenv("SUBSCRIPTION_ID", default="")
+    resource_group = os.getenv("RESOURCE_GROUP", default="")
+    workspace_name = os.getenv("WORKSPACE_NAME", default="")
+    print('subscription_id = ' + str(subscription_id))
+    print('resource_group = ' + str(resource_group))
+    print('workspace_name = ' + str(workspace_name))
+    ws = Workspace(subscription_id=subscription_id, resource_group=resource_group, workspace_name=workspace_name)
 
 # Get the default datastore
 default_ds = ws.get_default_datastore()
