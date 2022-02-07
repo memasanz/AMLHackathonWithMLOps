@@ -79,16 +79,6 @@ stages:
         inlineScript: |
           echo 'was equal'
       displayName: 'check if equal'
-
-    - task: AzureCLI@1
-      condition: ${{ eq(3, $DEPLOYME) }}
-      inputs:
-        azureSubscription: $(ml-ws-connection)
-        scriptLocation: inlineScript
-        workingDirectory: $(Build.SourcesDirectory)/sourcecode/03_devopspipeline
-        inlineScript: |
-          echo 'was equal'
-      displayName: 'check if equal'
       
     - task: Bash@3
       inputs:
