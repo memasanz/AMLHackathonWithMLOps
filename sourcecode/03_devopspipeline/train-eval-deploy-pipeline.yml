@@ -81,7 +81,7 @@ stages:
     #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       
     - task: AzureCLI@1
-      condition: ${{ eq(1, $(setoutput.deployme)) }}
+      condition: ${{ eq('test', variables['setoutput.deployme']) }}
       inputs:
         azureSubscription: $(ml-ws-connection)
         scriptLocation: inlineScript
@@ -94,7 +94,7 @@ stages:
       displayName: 'DeployACI'
 
     - task: AzureCLI@1
-      condition: ${{ eq(1, variables['DEPLOYME']) }}
+      condition: ${{ eq(test, variables['deployme']) }}
       inputs:
         azureSubscription: $(ml-ws-connection)
         scriptLocation: inlineScript
